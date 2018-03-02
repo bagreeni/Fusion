@@ -16,4 +16,6 @@ public abstract class FusionDatabase extends RoomDatabase {
 
     public abstract CategoryDAO categoryDAO();
 
+    public abstract TaskCategoryDAO taskCategoryDAO();
+
 }
