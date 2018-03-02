@@ -8,7 +8,7 @@ import android.arch.persistence.room.RoomDatabase;
  */
 
 @Database(version = 1, entities = {Task.class, TaskText.class, Category.class, TaskCategory.class})
-public abstract class DatabaseManager extends RoomDatabase {
+public abstract class FusionDatabase extends RoomDatabase {
 
     public abstract TaskDAO taskDAO();
 
