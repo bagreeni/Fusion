@@ -8,18 +8,16 @@ import android.arch.persistence.room.PrimaryKey;
  * Created by voxaelfox on 2/28/18.
  */
 
-@Entity(foreignKeys = @ForeignKey   (  entity = Category.class,
-                                        parentColumns = "categoryID",
-                                        childColumns = "taskID" )
-                                    )
+@Entity(foreignKeys = @ForeignKey(  entity = Task.class,
+                                    parentColumns = "taskID",
+                                    childColumns = "taskID" ))
 public class TaskText {
 
-        @PrimaryKey
-        public int taskID;
+    @PrimaryKey
+    public int taskTextID;
 
-        public String data;
+    public int taskID;
 
-        public int categoryID;
-
+    public String data;
 
 }
