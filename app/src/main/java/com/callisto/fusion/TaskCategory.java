@@ -18,7 +18,7 @@ import android.arch.persistence.room.PrimaryKey;
                         })
 public class TaskCategory {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int TaskCategoryID;
 
     public int taskID;

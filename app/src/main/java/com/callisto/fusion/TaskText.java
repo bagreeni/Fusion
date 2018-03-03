@@ -13,10 +13,10 @@ import android.arch.persistence.room.PrimaryKey;
                                     childColumns = "taskID" ))
 public class TaskText {
 
-    @PrimaryKey
-    public int taskTextID;
+    @PrimaryKey(autoGenerate = true)
+    public long taskTextID;
 
-    public int taskID;
+    public long taskID;
 
     public String data;
 

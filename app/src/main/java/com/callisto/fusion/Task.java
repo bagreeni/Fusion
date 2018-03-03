@@ -10,7 +10,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class Task {
 
-    @PrimaryKey
-    public int taskID;
+    @PrimaryKey(autoGenerate = true)
+    public long taskID;
 
 }

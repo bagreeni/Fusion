@@ -18,9 +18,9 @@ public interface TaskTextDAO {
     List<TaskText> getAll();
 
     @Insert
-    void insert(TaskText textTask);
+    long insert(TaskText textTask);
 
     @Delete
-    void delete(TaskText testTask);
+    int delete(TaskText testTask);
 
 }

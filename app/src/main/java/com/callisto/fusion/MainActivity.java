@@ -13,32 +13,37 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    String[] taskArray = new String[100];
-    int i =0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FusionDatabase db = Room.databaseBuilder(getApplicationContext(),
+        final FusionDatabase db = Room.databaseBuilder(getApplicationContext(),
                 FusionDatabase.class, "fusion-db").build();
 
-        final TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(taskArray[0]);
-        final EditText addTaskText = (EditText) findViewById(R.id.addTaskText);
+        final TextView textView = findViewById(R.id.textView);
+        final EditText addTaskText = findViewById(R.id.addTaskText);
 
-        FloatingActionButton addTask = (FloatingActionButton) findViewById(R.id.floatingAddTask);
+        FloatingActionButton addTask = findViewById(R.id.floatingAddTask);
         addTask.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                taskArray[i] = addTaskText.getText().toString();
-                i++;
-                textView.setText( textView.getText() + "   " + addTaskText.getText().toString());
+                long insertedTaskID = db.taskDAO().insert(new Task());
+                TaskText texttask = new TaskText();
+                texttask.taskID = insertedTaskID;
+                texttask.data = addTaskText.getText().toString();
+
+                db.taskTextDAO().insert(new TaskText());
+
+                String tasks = "";
+                for (TaskText ttask : db.taskTextDAO().getAll()) {
+                    tasks.concat("\n" + ttask.data);
+                }
+
+                textView.setText(tasks);
 
                 addTaskText.setText("Add Task");
 
-            }
-                                       });
+            }});
 
 
     }

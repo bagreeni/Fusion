@@ -13,9 +13,9 @@ import android.arch.persistence.room.Query;
 public interface TaskDAO {
 
     @Insert
-    void insert(Task task);
+    long insert(Task task);
 
     @Delete
-    void delete(Task task);
+    int delete(Task task);
 
 }
