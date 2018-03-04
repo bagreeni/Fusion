@@ -1,9 +1,8 @@
-package com.callisto.fusion;
+package com.callisto.fusion.db;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
 
 /**
  * Created by voxaelfox on 3/1/18.

@@ -6,7 +6,7 @@
     android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.callisto.fusion.MainActivity"
+    tools:context="com.callisto.fusion.ui.MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
     <android.support.design.widget.FloatingActionButton

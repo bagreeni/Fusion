@@ -1,24 +1,21 @@
-package com.callisto.fusion;
+package com.callisto.fusion.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.arch.persistence.room.Room;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.io.Console;
+import com.callisto.fusion.DataRepository;
+import com.callisto.fusion.R;
+import com.callisto.fusion.db.TaskText;
+import com.callisto.fusion.viewmodel.TextTaskViewModel;
+
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,11 +1,10 @@
-package com.callisto.fusion;
+package com.callisto.fusion.viewmodel;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.content.Context;
+
+import com.callisto.fusion.DataRepository;
+import com.callisto.fusion.db.TaskText;
 
 import java.util.List;
 

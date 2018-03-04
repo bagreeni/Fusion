@@ -5,6 +5,9 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.util.Log;
 
+import com.callisto.fusion.db.Task;
+import com.callisto.fusion.db.TaskText;
+
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

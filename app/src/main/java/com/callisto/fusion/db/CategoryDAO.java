@@ -1,4 +1,4 @@
-package com.callisto.fusion;
+package com.callisto.fusion.db;
 
 import android.arch.persistence.room.Dao;
 
