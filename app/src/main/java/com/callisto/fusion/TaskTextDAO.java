@@ -1,5 +1,6 @@
 package com.callisto.fusion;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface TaskTextDAO {
 
     @Query("SELECT * FROM TaskText")
-    List<TaskText> getAll();
+    LiveData<List<TaskText>> getAll();
 
     @Insert
     long insert(TaskText textTask);
