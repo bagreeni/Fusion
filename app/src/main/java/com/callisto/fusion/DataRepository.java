@@ -36,7 +36,6 @@ public class DataRepository {
 
         final String teststr = str.toString();
 
-
         dbExec.execute(new Runnable() {
             @Override
             public void run() {
@@ -48,8 +47,6 @@ public class DataRepository {
                 TaskText textTask = new TaskText();
                 textTask.taskID = id;
                 textTask.data = teststr;
-
-                Log.d("Tag?", "WHAT THE FUCK IS HAPPENING HERE" + id);
 
                 db.taskTextDAO().insert(textTask);
 
