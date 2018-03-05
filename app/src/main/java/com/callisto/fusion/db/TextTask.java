@@ -11,10 +11,10 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(foreignKeys = @ForeignKey(  entity = Task.class,
                                     parentColumns = "taskID",
                                     childColumns = "taskID" ))
-public class TaskText {
+public class TextTask {
 
     @PrimaryKey(autoGenerate = true)
-    public long taskTextID;
+    public long textTaskID;
 
     public long taskID;
 

@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.callisto.fusion.DataRepository;
-import com.callisto.fusion.db.TaskText;
+import com.callisto.fusion.db.TextTask;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import java.util.List;
  */
 
 public class TextTaskViewModel extends ViewModel {
-    private LiveData<List<TaskText>> textTasks;
+    private LiveData<List<TextTask>> textTasks;
 
-    public LiveData<List<TaskText>> getTextTasks(DataRepository dr) {
+    public LiveData<List<TextTask>> getTextTasks(DataRepository dr) {
         if (textTasks == null) {
             textTasks = dr.getTextTasks();
         }

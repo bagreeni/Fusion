@@ -13,15 +13,15 @@ import java.util.List;
  */
 
 @Dao
-public interface TaskTextDAO {
+public interface TextTaskDAO {
 
-    @Query("SELECT * FROM TaskText")
-    LiveData<List<TaskText>> getAll();
+    @Query("SELECT * FROM TextTask")
+    LiveData<List<TextTask>> getAll();
 
     @Insert
-    long insert(TaskText textTask);
+    long insert(TextTask textTask);
 
     @Delete
-    int delete(TaskText testTask);
+    int delete(TextTask testTask);
 
 }
