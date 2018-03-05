@@ -6,7 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.callisto.fusion.db.Task;
-import com.callisto.fusion.db.TaskText;
+import com.callisto.fusion.db.TextTask;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -30,8 +30,8 @@ public class DataRepository {
     }
 
     // database helper method
-    public LiveData<List<TaskText>> getTextTasks() {
-        return db.taskTextDAO().getAll();
+    public LiveData<List<TextTask>> getTextTasks() {
+        return db.textTaskDAO().getAll();
     }
 
     // handles all insertion procedures, including operating on a worker thread
@@ -49,11 +49,11 @@ public class DataRepository {
                 long id = db.taskDAO().insert(task);
 
                 // make a TextTask and insert AND link to Task
-                TaskText textTask = new TaskText();
+                TextTask textTask = new TextTask();
                 textTask.taskID = id;
                 textTask.data = teststr;
 
-                db.taskTextDAO().insert(textTask);
+                db.textTaskDAO().insert(textTask);
 
             }
         });

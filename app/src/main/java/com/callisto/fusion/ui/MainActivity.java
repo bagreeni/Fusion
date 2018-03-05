@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
-import com.callisto.fusion.db.TaskText;
+import com.callisto.fusion.db.TextTask;
 import com.callisto.fusion.viewmodel.TextTaskViewModel;
 
 import java.util.List;
@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
-        ttViewModel.getTextTasks(dataRepository).observe(this, new Observer<List<TaskText>>() {
+        ttViewModel.getTextTasks(dataRepository).observe(this, new Observer<List<TextTask>>() {
             @Override
-            public void onChanged(@Nullable final List<TaskText> newList) {
+            public void onChanged(@Nullable final List<TextTask> newList) {
                 // Update the UI, in this case, a TextView.
                 String tasks = "";
-                for (TaskText ttask : newList) {
+                for (TextTask ttask : newList) {
                     tasks = tasks.concat("\n" + ttask.data);
                 }
 
