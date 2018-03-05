@@ -27,6 +27,8 @@ public class DataRepository {
         db = Room.databaseBuilder(context, FusionDatabase.class, "fusion-database").build();
         dbExec = Executors.newSingleThreadExecutor();
 
+        initializeData();
+
     }
 
     // database helper method
@@ -35,9 +37,9 @@ public class DataRepository {
     }
 
     // handles all insertion procedures, including operating on a worker thread
-    public void insertTextTask(String str) {
+    public void insertTextTask(String data, String category) {
 
-        final String teststr = str.toString();
+        final String teststr = data.toString();
 
         dbExec.execute(new Runnable() {
             @Override
@@ -59,6 +61,8 @@ public class DataRepository {
         });
     }
 
+    private void initializeData() {
 
+    }
 
 }
