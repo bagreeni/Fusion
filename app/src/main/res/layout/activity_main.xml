@@ -9,11 +9,18 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -22,7 +29,12 @@
             android:background="@android:color/background_light"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name" />
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
