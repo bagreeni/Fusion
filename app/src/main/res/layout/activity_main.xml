@@ -30,10 +30,38 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_name" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingAddTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:clickable="true"
+            app:backgroundTint="@android:color/holo_green_dark"
+            app:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
+        <EditText
+            android:id="@+id/addTaskText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Add Task"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/floatingAddTask"
+            app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

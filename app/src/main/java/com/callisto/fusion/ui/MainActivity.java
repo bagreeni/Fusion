@@ -1,20 +1,36 @@
-package com.callisto.fusion;
+package com.callisto.fusion.ui;
 
-import android.content.Intent;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+import com.callisto.fusion.DataRepository;
+import com.callisto.fusion.R;
+import com.callisto.fusion.db.TextTask;
+import com.callisto.fusion.viewmodel.TextTaskViewModel;
+
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+    // Initialize private fields for use here
+    private TextTaskViewModel ttViewModel;
+    private DataRepository dataRepository;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -23,6 +39,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // fill our private fields, ViewModels, and DataRepository Instances
+        // This will probably operate on a singleton madel later
+        dataRepository = new DataRepository(getApplicationContext());
+        ttViewModel = ViewModelProviders.of(this).get(TextTaskViewModel.class);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,28 +70,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
 
-//        mDrawerLayout.addDrawerListener(
-//                new DrawerLayout.DrawerListener() {
-//                    @Override
-//                    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onDrawerOpened(@NonNull View drawerView) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onDrawerClosed(@NonNull View drawerView) {
-//                    }
-//
-//                    @Override
-//                    public void onDrawerStateChanged(int newState) {
-//
-//                    }
-//                }
-//        );
+        // get UI elements
+        final TextView textView = findViewById(R.id.textView);
+        final EditText addTaskText = findViewById(R.id.addTaskText);
+
+        // attach an observer to database lists
+        // in this case, a list of TextTasks
+        ttViewModel.getTextTasks(dataRepository).observe(this, new Observer<List<TextTask>>() {
+            @Override
+            public void onChanged(@Nullable final List<TextTask> newList) {
+                // Update the UI, in this case, a TextView.
+                String tasks = "";
+                for (TextTask ttask : newList) {
+                    tasks = tasks.concat("\n" + ttask.data);
+                }
+
+                textView.setText(tasks);
+
+            }
+        });
+
+        // find a button on screen
+        FloatingActionButton addTask = findViewById(R.id.floatingAddTask);
+
+        // give the button a behavior
+        addTask.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+                dataRepository.insertTextTask(addTaskText.getText().toString());
+                addTaskText.setText("Add Task");
+
+            }});
+
+
     }
 
     @Override
@@ -103,8 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -113,23 +145,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Handle the camera action
         }
 
-//        else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        } else if (id == R.id.nav_settings){
-//
-//        }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }
