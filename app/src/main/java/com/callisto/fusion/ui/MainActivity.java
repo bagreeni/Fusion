@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
 
-                dataRepository.insertTextTask(addTaskText.getText().toString());
+                dataRepository.insertTextTask(addTaskText.getText().toString(), "default");
                 addTaskText.setText("Add Task");
 
             }});

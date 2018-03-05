@@ -1,16 +1,22 @@
 package com.callisto.fusion.db;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
  * Created by voxaelfox on 2/28/18.
  */
 
-@Entity
+@Entity(indices = {
+            @Index(value = "name", unique = true)
+                    })
 public class Category {
 
     @PrimaryKey(autoGenerate = true)
-    public int categoryID;
+    public long categoryID;
+
+    public String name;
 
 }
