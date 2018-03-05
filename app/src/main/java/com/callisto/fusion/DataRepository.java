@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 
 public class DataRepository {
 
+    // references to the database and en Executor thread
     private FusionDatabase db;
     private Executor dbExec;
 
@@ -28,10 +29,12 @@ public class DataRepository {
 
     }
 
+    // database helper method
     public LiveData<List<TaskText>> getTextTasks() {
         return db.taskTextDAO().getAll();
     }
 
+    // handles all insertion procedures, including operating on a worker thread
     public void insertTextTask(String str) {
 
         final String teststr = str.toString();
@@ -40,10 +43,12 @@ public class DataRepository {
             @Override
             public void run() {
 
+                // make a Task and insert
                 Task task = new Task();
 
                 long id = db.taskDAO().insert(task);
 
+                // make a TextTask and insert AND link to Task
                 TaskText textTask = new TaskText();
                 textTask.taskID = id;
                 textTask.data = teststr;
