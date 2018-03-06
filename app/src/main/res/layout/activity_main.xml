@@ -58,8 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Add Task"
             android:inputType="textPersonName"
-            android:text="Add Task"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/floatingAddTask"
             app:layout_constraintStart_toStartOf="parent" />

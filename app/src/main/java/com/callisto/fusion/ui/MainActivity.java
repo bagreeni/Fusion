@@ -3,6 +3,7 @@ package com.callisto.fusion.ui;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -100,7 +102,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), "default");
-                addTaskText.setText("Add Task");
+                addTaskText.setText("");
+
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
 
             }
         });
