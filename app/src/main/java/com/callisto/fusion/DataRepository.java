@@ -29,11 +29,21 @@ public class DataRepository {
         db = Room.databaseBuilder(context, FusionDatabase.class, "fusion-database").fallbackToDestructiveMigration().build();
         dbExec = Executors.newSingleThreadExecutor();
 
+        initializeData();
+
     }
 
     // database helper method
     public LiveData<List<TextTask>> getTextTasks() {
-        return db.textTaskDAO().getAll();
+        return db.textTaskDAO().getAllTextTasks();
+    }
+
+    public LiveData<List<Category>> getAllCategories() {
+        return db.categoryDAO().getAllCategories();
+    }
+
+    public List<Category> getAllCategoriesStatic() {
+        return db.categoryDAO().getAllCategoriesStatic();
     }
 
     // handles all insertion procedures, including operating on a worker thread
@@ -76,7 +86,7 @@ public class DataRepository {
                 textTask.data = data;
 
                 // insert TextTask to db
-                db.textTaskDAO().insert(textTask);
+                db.textTaskDAO().insertTextTask(textTask);
 
                 // procedure finished!
 
@@ -84,12 +94,34 @@ public class DataRepository {
         });
     }
 
-    public LiveData<List<Category>> getAllCategories() {
-        return db.categoryDAO().getAllCategories();
+    public void insertCategory(final String categoryName) {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                    Category category = new Category();
+                    category.name = categoryName;
+
+                    db.categoryDAO().insertCategory(category);
+
+            }
+        });
     }
 
-    public void insertCategory(String category) {
+    private void initializeData() {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
 
+                if(db.categoryDAO().getCategoryMatchCount("default") == 0) {
+                    Category defCat = new Category();
+                    defCat.name = "default";
+
+                    db.categoryDAO().insertCategory(defCat);
+                }
+
+            }
+        });
     }
 
 }
