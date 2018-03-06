@@ -5,7 +5,9 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.util.Log;
 
+import com.callisto.fusion.db.Category;
 import com.callisto.fusion.db.Task;
+import com.callisto.fusion.db.TaskCategory;
 import com.callisto.fusion.db.TextTask;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class DataRepository {
 
     public DataRepository(Context context) {
 
-        db = Room.databaseBuilder(context, FusionDatabase.class, "fusion-database").build();
+        db = Room.databaseBuilder(context, FusionDatabase.class, "fusion-database").fallbackToDestructiveMigration().build();
         dbExec = Executors.newSingleThreadExecutor();
 
     }
@@ -35,9 +37,7 @@ public class DataRepository {
     }
 
     // handles all insertion procedures, including operating on a worker thread
-    public void insertTextTask(String str) {
-
-        final String teststr = str.toString();
+    public void insertTextTask(final String data, final String categoryName) {
 
         dbExec.execute(new Runnable() {
             @Override
@@ -46,19 +46,50 @@ public class DataRepository {
                 // make a Task and insert
                 Task task = new Task();
 
-                long id = db.taskDAO().insert(task);
+                long taskID = db.taskDAO().insert(task);
+
+                // create a TaskCategory to link to newly created Task
+                TaskCategory taskCategory = new TaskCategory();
+                taskCategory.taskID = taskID;
+
+                // check if category exists, create if not
+                // to get categoryID for TaskCategory link
+                long categoryID;
+                if (db.categoryDAO().getCategoryMatchCount(categoryName) == 0) {
+                    Category category = new Category();
+                    category.name = categoryName;
+
+                    categoryID = db.categoryDAO().insertCategory(category);
+                } else {
+                    categoryID = db.categoryDAO().getCategoryID(categoryName);
+                }
+
+                // attach category link
+                taskCategory.categoryID = categoryID;
+
+                // insert new TaskCategory link into db
+                db.taskCategoryDAO().insertTaskCatagory(taskCategory);
 
                 // make a TextTask and insert AND link to Task
                 TextTask textTask = new TextTask();
-                textTask.taskID = id;
-                textTask.data = teststr;
+                textTask.taskID = taskID;
+                textTask.data = data;
 
+                // insert TextTask to db
                 db.textTaskDAO().insert(textTask);
+
+                // procedure finished!
 
             }
         });
     }
 
+    public LiveData<List<Category>> getAllCategories() {
+        return db.categoryDAO().getAllCategories();
+    }
 
+    public void insertCategory(String category) {
+
+    }
 
 }
