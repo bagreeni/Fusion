@@ -3,7 +3,6 @@ package com.callisto.fusion;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.util.Log;
 
 import com.callisto.fusion.db.Category;
 import com.callisto.fusion.db.Task;
@@ -21,29 +20,30 @@ import java.util.concurrent.Executors;
 public class DataRepository {
 
     // references to the database and en Executor thread
-    private FusionDatabase db;
-    private Executor dbExec;
+    private static FusionDatabase db = null;
+    private static DataRepository dr = null;
+    private static Executor dbExec;
 
-    public DataRepository(Context context) {
-
-        db = Room.databaseBuilder(context, FusionDatabase.class, "fusion-database").fallbackToDestructiveMigration().build();
-        dbExec = Executors.newSingleThreadExecutor();
-
+    private DataRepository() {
         initializeData();
-
     }
 
-    // database helper method
-    public LiveData<List<TextTask>> getTextTasks() {
+    public static DataRepository getInstance() {
+        if (dr == null) {
+            dr = new DataRepository();
+            db = db = Room.databaseBuilder(FusionApplication.getAppContext(), FusionDatabase.class, "fusion-database").fallbackToDestructiveMigration().build();
+            dbExec = Executors.newSingleThreadExecutor();
+        }
+        return dr;
+    }
+
+    // database helper methods
+    public LiveData<List<TextTask>> getAllTextTasks() {
         return db.textTaskDAO().getAllTextTasks();
     }
 
     public LiveData<List<Category>> getAllCategories() {
         return db.categoryDAO().getAllCategories();
-    }
-
-    public List<Category> getAllCategoriesStatic() {
-        return db.categoryDAO().getAllCategoriesStatic();
     }
 
     // handles all insertion procedures, including operating on a worker thread

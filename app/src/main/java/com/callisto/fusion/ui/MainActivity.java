@@ -3,6 +3,7 @@ package com.callisto.fusion.ui;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Initialize private fields for use here
     private TextTaskViewModel ttViewModel;
-    private DataRepository dataRepository;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         // fill our private fields, ViewModels, and DataRepository Instances
         // This will probably operate on a singleton madel later
-        dataRepository = new DataRepository(getApplicationContext());
         ttViewModel = ViewModelProviders.of(this).get(TextTaskViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
-        ttViewModel.getTextTasks(dataRepository).observe(this, new Observer<List<TextTask>>() {
+        ttViewModel.getTextTasks().observe(this, new Observer<List<TextTask>>() {
             @Override
             public void onChanged(@Nullable final List<TextTask> newList) {
                 // Update the UI, in this case, a TextView.
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                dataRepository.insertTextTask(addTaskText.getText().toString(), "default");
+                DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), "default");
                 addTaskText.setText("Add Task");
 
             }
