@@ -1,5 +1,6 @@
 package com.callisto.fusion.ui;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.provider.ContactsContract;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
+import com.callisto.fusion.db.Category;
 import com.callisto.fusion.db.TextTask;
 import com.callisto.fusion.viewmodel.TextTaskViewModel;
 
@@ -93,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton addTask = findViewById(R.id.floatingAddTask);
 
         // give the button a behavior
-        addTask.setOnClickListener(new View.OnClickListener(){
+        addTask.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
 
                 DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), "default");
                 addTaskText.setText("Add Task");
@@ -103,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        addMenuItem();
     }
 
     @Override
@@ -123,11 +126,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
@@ -147,5 +150,29 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void addMenuItem(){
+        NavigationView navView = findViewById(R.id.nav_view);
+
+        final Menu submenu = navView.getMenu().addSubMenu("New Super SubMenu");
+
+        LiveData<List<Category>> categories = DataRepository.getInstance().getAllCategories();
+        ttViewModel.getCategories().observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(@Nullable List<Category> categories) {
+                // UI Changes happen here
+
+                for (Category category : categories) {
+                    submenu.add(category.name);
+                }
+
+            }
+        });
+//        submenu.add("item1");
+//        submenu.add("item1");
+//        submenu.add("item1");
+
+        navView.invalidate();
     }
 }

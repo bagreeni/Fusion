@@ -22,17 +22,21 @@ public class DataRepository {
     // references to the database and en Executor thread
     private static FusionDatabase db = null;
     private static DataRepository dr = null;
-    private static Executor dbExec;
+    private static Executor dbExec = null;
 
     private DataRepository() {
         initializeData();
     }
 
     public static DataRepository getInstance() {
+        if (db == null) {
+            db = Room.databaseBuilder(FusionApplication.getAppContext(), FusionDatabase.class, "fusion-database").fallbackToDestructiveMigration().build();
+        }
+        if (dbExec == null) {
+            dbExec = Executors.newSingleThreadExecutor();
+        }
         if (dr == null) {
             dr = new DataRepository();
-            db = db = Room.databaseBuilder(FusionApplication.getAppContext(), FusionDatabase.class, "fusion-database").fallbackToDestructiveMigration().build();
-            dbExec = Executors.newSingleThreadExecutor();
         }
         return dr;
     }
