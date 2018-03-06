@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Initialize private fields for use here
     private TextTaskViewModel ttViewModel;
-    private DataRepository dataRepository;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         // fill our private fields, ViewModels, and DataRepository Instances
         // This will probably operate on a singleton madel later
-        dataRepository = DataRepository.getInstance();
         ttViewModel = ViewModelProviders.of(this).get(TextTaskViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
 
-                dataRepository.insertTextTask(addTaskText.getText().toString(), "default");
+                DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), "default");
                 addTaskText.setText("Add Task");
 
             }
