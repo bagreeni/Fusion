@@ -16,12 +16,12 @@ import java.util.List;
 public interface TextTaskDAO {
 
     @Query("SELECT * FROM TextTask")
-    LiveData<List<TextTask>> getAll();
+    LiveData<List<TextTask>> getAllTextTasks();
 
     @Insert
-    long insert(TextTask textTask);
+    long insertTextTask(TextTask textTask);
 
     @Delete
-    int delete(TextTask testTask);
+    int deleteTextTask(TextTask testTask);
 
 }
