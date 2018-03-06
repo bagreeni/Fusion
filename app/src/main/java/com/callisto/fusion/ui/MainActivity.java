@@ -155,15 +155,20 @@ public class MainActivity extends AppCompatActivity {
     private void addMenuItem(){
         NavigationView navView = findViewById(R.id.nav_view);
 
-        Menu menu = navView.getMenu();
-        Menu submenu = menu.addSubMenu("New Super SubMenu");
+        final Menu submenu = navView.getMenu().addSubMenu("New Super SubMenu");
 
-        LiveData<List<Category>> categories = dataRepository.getAllCategories();
-        if(categories.getValue() != null) {
-            for (Category category : categories.getValue()) {
-                submenu.add(category.name);
+        LiveData<List<Category>> categories = DataRepository.getInstance().getAllCategories();
+        ttViewModel.getCategories().observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(@Nullable List<Category> categories) {
+                // UI Changes happen here
+
+                for (Category category : categories) {
+                    submenu.add(category.name);
+                }
+
             }
-        }
+        });
 //        submenu.add("item1");
 //        submenu.add("item1");
 //        submenu.add("item1");
