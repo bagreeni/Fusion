@@ -84,6 +84,10 @@ public class DataRepository {
         });
     }
 
+    public LiveData<List<Category>> getAllCategories() {
+        return db.categoryDAO().getAllCategories();
+    }
+
     public void insertCategory(String category) {
 
     }

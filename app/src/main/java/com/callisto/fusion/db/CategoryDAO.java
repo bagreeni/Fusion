@@ -1,5 +1,6 @@
 package com.callisto.fusion.db;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.Insert;
@@ -13,6 +14,9 @@ import java.util.List;
 
 @Dao
 public interface CategoryDAO {
+
+    @Query("SELECT * FROM Category")
+    public LiveData<List<Category>> getAllCategories();
 
     @Query("SELECT categoryID FROM Category WHERE name = :catName")
     public long getCategoryID(String catName);
