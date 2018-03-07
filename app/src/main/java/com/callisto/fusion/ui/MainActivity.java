@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.callisto.fusion.CreateTaskMenu;
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.Category;
@@ -91,41 +93,37 @@ public class MainActivity extends AppCompatActivity {
                     tasks = tasks.concat("\n"   + fullTextTask.data + ", "
                                                 + fullTextTask.categoryName + ", "
                                                 + fullTextTask.toString()
-
                     );
-
                 }
-
                 textView.setText(tasks);
-
             }
         });
 
-        // find a button on screen
-        FloatingActionButton addTask = findViewById(R.id.floatingAddTask);
-
-        // give the button a behavior
-        addTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ArrayList<String> categoryList = new ArrayList<>();
-                categoryList.add("default");
-
-                Date dueDate = new Date();
-
-                Date workDate = new Date();
-
-                DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), categoryList, dueDate, workDate);
-                addTaskText.setText("");
-
-                if (view != null) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-
-            }
-        });
+//        // find a button on screen
+//        FloatingActionButton addTask = findViewById(R.id.floatingAddTask);
+//
+//        // give the button a behavior
+//        addTask.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                ArrayList<String> categoryList = new ArrayList<>();
+//                categoryList.add("default");
+//
+//                Date dueDate = new Date();
+//
+//                Date workDate = new Date();
+//
+//                DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), categoryList, dueDate, workDate);
+//                addTaskText.setText("");
+//
+//                if (view != null) {
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//                }
+//
+//            }
+//        });
 
         addMenuItem();
     }
@@ -191,10 +189,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        submenu.add("item1");
-//        submenu.add("item1");
-//        submenu.add("item1");
-
         navView.invalidate();
+    }
+
+    public void createTask(View view){
+        Intent intent = new Intent(this,CreateTaskMenu.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        startActivity(intent);
     }
 }
