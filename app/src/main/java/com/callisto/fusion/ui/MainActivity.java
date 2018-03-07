@@ -88,11 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 String tasks = "";
                 for (FullTextTask fullTextTask : fullTextTasks) {
 
-                    tasks = tasks.concat("\n"   + fullTextTask.data + ", "
-                                                + fullTextTask.categoryName + ", "
-                                                + fullTextTask.toString()
-
-                    );
+                    tasks = tasks.concat("\n\n" + fullTextTask.toString() );
 
                 }
 
