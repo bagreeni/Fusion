@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by voxaelfox on 3/6/18.
@@ -27,10 +28,9 @@ public class FullTextTask {
     public long taskCategoryID;
 
     // from Category
-    public long categoryID;
+    public String categoryIDList;
 
-    @ColumnInfo(name = "name")
-    public String categoryName;
+    public String categoryList;
 
     // for debugging
     @Override
@@ -41,8 +41,8 @@ public class FullTextTask {
                 " | textTaskID: " + textTaskID +
                 " | data: " + data +
                 " | taskCategoryID: " + taskCategoryID +
-                " | categoryID: " + categoryID +
-                " | categoryName: " + categoryName;
+                " | categoryIDList: " + categoryIDList +
+                " | categoryList: " + categoryList;
     }
 
 }

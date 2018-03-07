@@ -76,7 +76,7 @@ public class DataRepository {
                 TaskCategory taskCategory = new TaskCategory();
                 taskCategory.taskID = taskID;
 
-                // for each catagory in the given list:
+                // for each category in the given list:
                 // check if category exists, create if not
                 // to get categoryID for TaskCategory link
                 // create entry in TaskCategory
