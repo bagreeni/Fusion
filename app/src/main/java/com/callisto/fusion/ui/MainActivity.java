@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -25,16 +24,18 @@ import android.widget.TextView;
 
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
-import com.callisto.fusion.db.Category;
-import com.callisto.fusion.db.TextTask;
-import com.callisto.fusion.viewmodel.TextTaskViewModel;
+import com.callisto.fusion.db.entities.Category;
+import com.callisto.fusion.db.entities.FullTextTask;
+import com.callisto.fusion.viewmodel.MainViewModel;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     // Initialize private fields for use here
-    private TextTaskViewModel ttViewModel;
+    private MainViewModel ttViewModel;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         // fill our private fields, ViewModels, and DataRepository Instances
         // This will probably operate on a singleton madel later
-        ttViewModel = ViewModelProviders.of(this).get(TextTaskViewModel.class);
+        ttViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,13 +80,20 @@ public class MainActivity extends AppCompatActivity {
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
-        ttViewModel.getTextTasks().observe(this, new Observer<List<TextTask>>() {
+        ttViewModel.getFullTextTasks().observe(this, new Observer<List<FullTextTask>>() {
             @Override
-            public void onChanged(@Nullable final List<TextTask> newList) {
+            public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
+
                 // Update the UI, in this case, a TextView.
                 String tasks = "";
-                for (TextTask ttask : newList) {
-                    tasks = tasks.concat("\n" + ttask.data);
+                for (FullTextTask fullTextTask : fullTextTasks) {
+
+                    tasks = tasks.concat("\n"   + fullTextTask.data + ", "
+                                                + fullTextTask.categoryName + ", "
+                                                + fullTextTask.toString()
+
+                    );
+
                 }
 
                 textView.setText(tasks);
@@ -101,7 +109,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), "default");
+                ArrayList<String> categoryList = new ArrayList<>();
+                categoryList.add("default");
+
+                Date dueDate = new Date();
+
+                Date workDate = new Date();
+
+                DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), categoryList, dueDate, workDate);
                 addTaskText.setText("");
 
                 if (view != null) {

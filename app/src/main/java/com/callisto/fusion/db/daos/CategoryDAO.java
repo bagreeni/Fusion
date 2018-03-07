@@ -1,9 +1,11 @@
-package com.callisto.fusion.db;
+package com.callisto.fusion.db.daos;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+
+import com.callisto.fusion.db.entities.Category;
 
 import java.util.List;
 

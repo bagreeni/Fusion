@@ -1,4 +1,4 @@
-package com.callisto.fusion.db;
+package com.callisto.fusion.db.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

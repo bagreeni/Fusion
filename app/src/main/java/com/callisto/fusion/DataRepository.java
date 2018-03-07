@@ -2,13 +2,15 @@ package com.callisto.fusion;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
-import android.content.Context;
 
-import com.callisto.fusion.db.Category;
-import com.callisto.fusion.db.Task;
-import com.callisto.fusion.db.TaskCategory;
-import com.callisto.fusion.db.TextTask;
+import com.callisto.fusion.db.entities.Category;
+import com.callisto.fusion.db.FusionDatabase;
+import com.callisto.fusion.db.entities.FullTextTask;
+import com.callisto.fusion.db.entities.Task;
+import com.callisto.fusion.db.entities.TaskCategory;
+import com.callisto.fusion.db.entities.TextTask;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -46,12 +48,16 @@ public class DataRepository {
         return db.textTaskDAO().getAllTextTasks();
     }
 
+    public LiveData<List<FullTextTask>> getAllFullTextTasks() {
+        return db.textTaskDAO().getAllFullTextTasks();
+    }
+
     public LiveData<List<Category>> getAllCategories() {
         return db.categoryDAO().getAllCategories();
     }
 
     // handles all insertion procedures, including operating on a worker thread
-    public void insertTextTask(final String data, final String categoryName) {
+    public void insertTextTask(final String data, final List<String> categoryNames, final Date dueDate, final Date workDate) {
 
         dbExec.execute(new Runnable() {
             @Override
@@ -59,30 +65,41 @@ public class DataRepository {
 
                 // make a Task and insert
                 Task task = new Task();
+                task.dueDate = dueDate;
+                task.workDate = workDate;
 
-                long taskID = db.taskDAO().insert(task);
+                new Date();
+
+                long taskID = db.taskDAO().insertTask(task);
 
                 // create a TaskCategory to link to newly created Task
                 TaskCategory taskCategory = new TaskCategory();
                 taskCategory.taskID = taskID;
 
+                // for each catagory in the given list:
                 // check if category exists, create if not
                 // to get categoryID for TaskCategory link
-                long categoryID;
-                if (db.categoryDAO().getCategoryMatchCount(categoryName) == 0) {
-                    Category category = new Category();
-                    category.name = categoryName;
+                // create entry in TaskCategory
 
-                    categoryID = db.categoryDAO().insertCategory(category);
-                } else {
-                    categoryID = db.categoryDAO().getCategoryID(categoryName);
+                for (String categoryName : categoryNames) {
+
+                    long categoryID;
+                    if (db.categoryDAO().getCategoryMatchCount(categoryName) == 0) {
+                        Category category = new Category();
+                        category.name = categoryName;
+
+                        categoryID = db.categoryDAO().insertCategory(category);
+                    } else {
+                        categoryID = db.categoryDAO().getCategoryID(categoryName);
+                    }
+
+                    // attach category link
+                    taskCategory.categoryID = categoryID;
+
+                    // insert new TaskCategory link into db
+                    db.taskCategoryDAO().insertTaskCatagory(taskCategory);
+
                 }
-
-                // attach category link
-                taskCategory.categoryID = categoryID;
-
-                // insert new TaskCategory link into db
-                db.taskCategoryDAO().insertTaskCatagory(taskCategory);
 
                 // make a TextTask and insert AND link to Task
                 TextTask textTask = new TextTask();
