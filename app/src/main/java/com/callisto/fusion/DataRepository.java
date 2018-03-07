@@ -2,12 +2,15 @@ package com.callisto.fusion;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
-import android.content.Context;
-import android.util.Log;
 
-import com.callisto.fusion.db.Task;
-import com.callisto.fusion.db.TextTask;
+import com.callisto.fusion.db.entities.Category;
+import com.callisto.fusion.db.FusionDatabase;
+import com.callisto.fusion.db.entities.FullTextTask;
+import com.callisto.fusion.db.entities.Task;
+import com.callisto.fusion.db.entities.TaskCategory;
+import com.callisto.fusion.db.entities.TextTask;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -19,25 +22,42 @@ import java.util.concurrent.Executors;
 public class DataRepository {
 
     // references to the database and en Executor thread
-    private FusionDatabase db;
-    private Executor dbExec;
+    private static FusionDatabase db = null;
+    private static DataRepository dr = null;
+    private static Executor dbExec = null;
 
-    public DataRepository(Context context) {
-
-        db = Room.databaseBuilder(context, FusionDatabase.class, "fusion-database").build();
-        dbExec = Executors.newSingleThreadExecutor();
-
+    private DataRepository() {
+        initializeData();
     }
 
-    // database helper method
-    public LiveData<List<TextTask>> getTextTasks() {
-        return db.textTaskDAO().getAll();
+    public static DataRepository getInstance() {
+        if (db == null) {
+            db = Room.databaseBuilder(FusionApplication.getAppContext(), FusionDatabase.class, "fusion-database").fallbackToDestructiveMigration().build();
+        }
+        if (dbExec == null) {
+            dbExec = Executors.newSingleThreadExecutor();
+        }
+        if (dr == null) {
+            dr = new DataRepository();
+        }
+        return dr;
+    }
+
+    // database helper methods
+    public LiveData<List<TextTask>> getAllTextTasks() {
+        return db.textTaskDAO().getAllTextTasks();
+    }
+
+    public LiveData<List<FullTextTask>> getAllFullTextTasks() {
+        return db.textTaskDAO().getAllFullTextTasks();
+    }
+
+    public LiveData<List<Category>> getAllCategories() {
+        return db.categoryDAO().getAllCategories();
     }
 
     // handles all insertion procedures, including operating on a worker thread
-    public void insertTextTask(String str) {
-
-        final String teststr = str.toString();
+    public void insertTextTask(final String data, final List<String> categoryNames, final Date dueDate, final Date workDate) {
 
         dbExec.execute(new Runnable() {
             @Override
@@ -45,20 +65,84 @@ public class DataRepository {
 
                 // make a Task and insert
                 Task task = new Task();
+                task.dueDate = dueDate;
+                task.workDate = workDate;
 
-                long id = db.taskDAO().insert(task);
+                new Date();
+
+                long taskID = db.taskDAO().insertTask(task);
+
+                // create a TaskCategory to link to newly created Task
+                TaskCategory taskCategory = new TaskCategory();
+                taskCategory.taskID = taskID;
+
+                // for each catagory in the given list:
+                // check if category exists, create if not
+                // to get categoryID for TaskCategory link
+                // create entry in TaskCategory
+
+                for (String categoryName : categoryNames) {
+
+                    long categoryID;
+                    if (db.categoryDAO().getCategoryMatchCount(categoryName) == 0) {
+                        Category category = new Category();
+                        category.name = categoryName;
+
+                        categoryID = db.categoryDAO().insertCategory(category);
+                    } else {
+                        categoryID = db.categoryDAO().getCategoryID(categoryName);
+                    }
+
+                    // attach category link
+                    taskCategory.categoryID = categoryID;
+
+                    // insert new TaskCategory link into db
+                    db.taskCategoryDAO().insertTaskCatagory(taskCategory);
+
+                }
 
                 // make a TextTask and insert AND link to Task
                 TextTask textTask = new TextTask();
-                textTask.taskID = id;
-                textTask.data = teststr;
+                textTask.taskID = taskID;
+                textTask.data = data;
 
-                db.textTaskDAO().insert(textTask);
+                // insert TextTask to db
+                db.textTaskDAO().insertTextTask(textTask);
+
+                // procedure finished!
 
             }
         });
     }
 
+    public void insertCategory(final String categoryName) {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
 
+                    Category category = new Category();
+                    category.name = categoryName;
+
+                    db.categoryDAO().insertCategory(category);
+
+            }
+        });
+    }
+
+    private void initializeData() {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                if(db.categoryDAO().getCategoryMatchCount("default") == 0) {
+                    Category defCat = new Category();
+                    defCat.name = "default";
+
+                    db.categoryDAO().insertCategory(defCat);
+                }
+
+            }
+        });
+    }
 
 }

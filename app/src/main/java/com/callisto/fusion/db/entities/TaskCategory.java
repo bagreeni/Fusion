@@ -1,4 +1,4 @@
-package com.callisto.fusion.db;
+package com.callisto.fusion.db.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
@@ -18,10 +18,10 @@ import android.arch.persistence.room.PrimaryKey;
 public class TaskCategory {
 
     @PrimaryKey(autoGenerate = true)
-    public int TaskCategoryID;
+    public long taskCategoryID;
 
-    public int taskID;
+    public long taskID;
 
-    public int categoryID;
+    public long categoryID;
 
 }
