@@ -13,9 +13,27 @@ import android.arch.persistence.room.PrimaryKey;
                     })
 public class Category {
 
+    // fields
+
     @PrimaryKey(autoGenerate = true)
-    public long categoryID;
+    private long categoryID;
+    private String name;
 
-    public String name;
+    // getters and setters
 
+    public long getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(long categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

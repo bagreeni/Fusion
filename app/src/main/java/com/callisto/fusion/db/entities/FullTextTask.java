@@ -8,25 +8,89 @@ import java.util.Date;
 
 public class FullTextTask {
 
+    // fields
+
     // from Task
-    public long taskID;
-
-    public Date dueDate;
-
-    public Date workDate;
+    private long taskID;
+    private Date dueDate;
+    private Date workDate;
 
     // from TextTask
-    public long textTaskID;
-
-    public String data;
+    private long textTaskID;
+    private String data;
 
     // from TaskCategory
-    public long taskCategoryID;
+    private long taskCategoryID;
 
     // from Category
-    public String categoryIDList;
+    private String categoryIDList;
+    private String categoryList;
 
-    public String categoryList;
+    // getters and setters
+
+    public long getTaskID() {
+        return taskID;
+    }
+
+    public void setTaskID(long taskID) {
+        this.taskID = taskID;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Date getWorkDate() {
+        return workDate;
+    }
+
+    public void setWorkDate(Date workDate) {
+        this.workDate = workDate;
+    }
+
+    public long getTextTaskID() {
+        return textTaskID;
+    }
+
+    public void setTextTaskID(long textTaskID) {
+        this.textTaskID = textTaskID;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public long getTaskCategoryID() {
+        return taskCategoryID;
+    }
+
+    public void setTaskCategoryID(long taskCategoryID) {
+        this.taskCategoryID = taskCategoryID;
+    }
+
+    public String getCategoryIDList() {
+        return categoryIDList;
+    }
+
+    public void setCategoryIDList(String categoryIDList) {
+        this.categoryIDList = categoryIDList;
+    }
+
+    public String getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(String categoryList) {
+        this.categoryList = categoryList;
+    }
 
     // for debugging
     @Override

@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 // UI Changes happen here
 
                 for (Category category : categories) {
-                    submenu.add(category.name);
+                    submenu.add(category.getName());
                 }
 
             }

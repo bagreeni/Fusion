@@ -12,11 +12,36 @@ import java.util.Date;
 @Entity
 public class Task {
 
+    // fields
+
     @PrimaryKey(autoGenerate = true)
-    public long taskID;
+    private long taskID;
+    private Date dueDate;
+    private Date workDate;
 
-    public Date dueDate;
+    // getters and setters
 
-    public Date workDate;
+    public long getTaskID() {
+        return taskID;
+    }
 
+    public void setTaskID(long taskID) {
+        this.taskID = taskID;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Date getWorkDate() {
+        return workDate;
+    }
+
+    public void setWorkDate(Date workDate) {
+        this.workDate = workDate;
+    }
 }
