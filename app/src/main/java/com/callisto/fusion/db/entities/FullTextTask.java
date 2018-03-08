@@ -1,10 +1,6 @@
 package com.callisto.fusion.db.entities;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by voxaelfox on 3/6/18.
