@@ -6,11 +6,6 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.callisto.fusion.ui.MainActivity"
-    tools:layout_editor_absoluteY="81dp">
-
-    <?xml version="1.0" encoding="utf-8"?>
-
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 

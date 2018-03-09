@@ -79,6 +79,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.taskRecyclerView);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+
+
         // get UI elements
         final TextView textView = findViewById(R.id.textView);
         final EditText addTaskText = findViewById(R.id.addTaskText);
@@ -89,19 +102,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
 
-                // Update the UI, in this case, a TextView.
-                String tasks = "";
-                for (FullTextTask fullTextTask : fullTextTasks) {
+                mAdapter = new RecyclerViewAdapter(fullTextTasks);
 
-                    tasks = tasks.concat("\n"   + fullTextTask.data + ", "
-                                                + fullTextTask.categoryName + ", "
-                                                + fullTextTask.toString()
-
-                    );
-
-                }
-
-                textView.setText(tasks);
+                mRecyclerView.setAdapter(mAdapter);
 
             }
         });
@@ -131,22 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.taskRecyclerView);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new MyAdapter();
-
-        mRecyclerView.setAdapter(mAdapter);
 
         addMenuItem();
     }
