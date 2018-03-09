@@ -65,8 +65,8 @@ public class DataRepository {
 
                 // make a Task and insert
                 Task task = new Task();
-                task.dueDate = dueDate;
-                task.workDate = workDate;
+                task.setDueDate(dueDate);
+                task.setDueDate(workDate);
 
                 new Date();
 
@@ -76,7 +76,7 @@ public class DataRepository {
                 TaskCategory taskCategory = new TaskCategory();
                 taskCategory.taskID = taskID;
 
-                // for each catagory in the given list:
+                // for each category in the given list:
                 // check if category exists, create if not
                 // to get categoryID for TaskCategory link
                 // create entry in TaskCategory
@@ -86,7 +86,7 @@ public class DataRepository {
                     long categoryID;
                     if (db.categoryDAO().getCategoryMatchCount(categoryName) == 0) {
                         Category category = new Category();
-                        category.name = categoryName;
+                        category.setName(categoryName);
 
                         categoryID = db.categoryDAO().insertCategory(category);
                     } else {
@@ -121,7 +121,7 @@ public class DataRepository {
             public void run() {
 
                     Category category = new Category();
-                    category.name = categoryName;
+                    category.setName(categoryName);
 
                     db.categoryDAO().insertCategory(category);
 
@@ -136,7 +136,7 @@ public class DataRepository {
 
                 if(db.categoryDAO().getCategoryMatchCount("default") == 0) {
                     Category defCat = new Category();
-                    defCat.name = "default";
+                    defCat.setName("default");
 
                     db.categoryDAO().insertCategory(defCat);
                 }

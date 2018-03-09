@@ -29,6 +29,6 @@ public interface CategoryDAO {
     long insertCategory(Category category);
 
     @Insert
-    long[] insertCatagories(Category... category);
+    long[] insertCategories(Category... category);
 
 }

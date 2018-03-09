@@ -17,11 +17,36 @@ import android.arch.persistence.room.PrimaryKey;
                         })
 public class TaskCategory {
 
+    // fields
+
     @PrimaryKey(autoGenerate = true)
     public long taskCategoryID;
-
     public long taskID;
-
     public long categoryID;
 
+    // getters and setters
+
+    public long getTaskCategoryID() {
+        return taskCategoryID;
+    }
+
+    public void setTaskCategoryID(long taskCategoryID) {
+        this.taskCategoryID = taskCategoryID;
+    }
+
+    public long getTaskID() {
+        return taskID;
+    }
+
+    public void setTaskID(long taskID) {
+        this.taskID = taskID;
+    }
+
+    public long getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(long categoryID) {
+        this.categoryID = categoryID;
+    }
 }
