@@ -186,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
                 for (Category category : categories) {
                     submenu.add(category.name);
                 }
-
             }
         });
         navView.invalidate();
