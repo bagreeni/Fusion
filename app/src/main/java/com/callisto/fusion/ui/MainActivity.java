@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -117,14 +119,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ArrayList<String> categoryList = new ArrayList<>();
-                categoryList.add("default");
+                String data = addTaskText.getText().toString().split(" ")[0];
+                String[] catList = addTaskText.getText().toString().split(" ")[1].split(",");
+
+                ArrayList<String> categoryList = new ArrayList<>(Arrays.asList(catList));
 
                 Date dueDate = new Date();
 
                 Date workDate = new Date();
 
-                DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), categoryList, dueDate, workDate);
+                DataRepository.getInstance().insertTextTask(data, categoryList, dueDate, workDate);
                 addTaskText.setText("");
 
                 if (view != null) {
@@ -194,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 // UI Changes happen here
 
                 for (Category category : categories) {
-                    submenu.add(category.name);
+                    submenu.add(category.getName());
                 }
 
             }
