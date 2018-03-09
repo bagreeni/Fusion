@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
-            // Handle the camera action
+            // Handle the settings action
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<Category> categories) {
                 // UI Changes happen here
 
+                submenu.clear();
                 for (Category category : categories) {
                     submenu.add(category.name);
                 }
