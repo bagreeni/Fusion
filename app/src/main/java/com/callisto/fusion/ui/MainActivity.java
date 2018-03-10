@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
                 submenu.clear();
                 for (Category category : categories) {
-                    submenu.add(category.name);
+                    submenu.add(category.name).setIcon(R.drawable.ic_bullet_point);
                 }
             }
         });
