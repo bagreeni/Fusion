@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.callisto.fusion.CreateTaskMenu;
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
@@ -173,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addMenuItem(){
-        NavigationView navView = findViewById(R.id.nav_view);
+        final NavigationView navView = findViewById(R.id.nav_view);
 
-        final Menu submenu = navView.getMenu().addSubMenu("New Super SubMenu");
+        final Menu menu = navView.getMenu();
 
         LiveData<List<Category>> categories = DataRepository.getInstance().getAllCategories();
         ttViewModel.getCategories().observe(this, new Observer<List<Category>>() {
@@ -183,13 +182,22 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<Category> categories) {
                 // UI Changes happen here
 
-                submenu.clear();
-                for (Category category : categories) {
-                    submenu.add(category.name).setIcon(R.drawable.ic_bullet_point);
+                menu.clear();
+                //public abstract MenuItem add(R.id.action_settings);
+               // navView.getMenu().add(R.id.action_settings);
+                for ( Category category : categories) {
+                    menu.add(category.name).setIcon(R.drawable.ic_bullet_point);
                 }
+
+                //add settings to bottom of nav drawer menu
+                navView.getMenu().findItem(R.id.action_settings);
+                navView.inflateMenu(R.menu.activity_nav_drawer_view);
+
             }
         });
         navView.invalidate();
+
+
     }
 
     public void createTask(View view){
