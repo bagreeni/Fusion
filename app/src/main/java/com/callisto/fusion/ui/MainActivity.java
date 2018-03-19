@@ -14,6 +14,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -37,6 +39,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     // Initialize private fields for use here
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     private MainViewModel ttViewModel;
 
     private DrawerLayout mDrawerLayout;
@@ -76,6 +81,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.taskRecyclerView);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+
+
         // get UI elements
         final TextView textView = findViewById(R.id.textView);
         final EditText addTaskText = findViewById(R.id.addTaskText);
@@ -86,16 +104,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
 
-                // Update the UI, in this case, a TextView.
-                String tasks = "";
-                for (FullTextTask fullTextTask : fullTextTasks) {
+                mAdapter = new RecyclerViewAdapter(fullTextTasks);
 
-                    Log.d("DBTEST", fullTextTask.toString());
-                    tasks = tasks.concat("\n\n" + fullTextTask.toString() );
-
-                }
-
-                textView.setText(tasks);
+                mRecyclerView.setAdapter(mAdapter);
 
             }
         });
