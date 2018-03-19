@@ -15,27 +15,31 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.callisto.fusion.CreateTaskMenu;
+import com.callisto.fusion.ui.CreateTaskActivity;
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     // Initialize private fields for use here
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     private MainViewModel ttViewModel;
 
     private DrawerLayout mDrawerLayout;
@@ -75,6 +79,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        mRecyclerView = findViewById(R.id.taskRecyclerView);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+
+
         // get UI elements
         final TextView textView = findViewById(R.id.textView);
         final EditText addTaskText = findViewById(R.id.addTaskText);
@@ -85,44 +102,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
 
-                // Update the UI, in this case, a TextView.
-                String tasks = "";
-                for (FullTextTask fullTextTask : fullTextTasks) {
+                mAdapter = new RecyclerViewAdapter(fullTextTasks);
 
-                    tasks = tasks.concat("\n"   + fullTextTask.data + ", "
-                                                + fullTextTask.categoryName + ", "
-                                                + fullTextTask.toString()
-                    );
-                }
-                textView.setText(tasks);
+                mRecyclerView.setAdapter(mAdapter);
+
             }
         });
-
-//        // find a button on screen
-//        FloatingActionButton addTask = findViewById(R.id.floatingAddTask);
-//
-//        // give the button a behavior
-//        addTask.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                ArrayList<String> categoryList = new ArrayList<>();
-//                categoryList.add("default");
-//
-//                Date dueDate = new Date();
-//
-//                Date workDate = new Date();
-//
-//                DataRepository.getInstance().insertTextTask(addTaskText.getText().toString(), categoryList, dueDate, workDate);
-//                addTaskText.setText("");
-//
-//                if (view != null) {
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//                }
-//
-//            }
-//        });
 
         addMenuItem();
     }
@@ -166,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             // Handle the settings action
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -176,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
         final Menu menu = navView.getMenu();
 
-        LiveData<List<Category>> categories = DataRepository.getInstance().getAllCategories();
         ttViewModel.getCategories().observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(@Nullable List<Category> categories) {
@@ -186,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 //public abstract MenuItem add(R.id.action_settings);
                // navView.getMenu().add(R.id.action_settings);
                 for ( Category category : categories) {
-                    menu.add(category.name).setIcon(R.drawable.ic_bullet_point);
+                    menu.add(category.getName()).setIcon(R.drawable.ic_bullet_point);
                 }
 
                 //add settings to bottom of nav drawer menu
@@ -201,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createTask(View view){
-        Intent intent = new Intent(this,CreateTaskMenu.class);
+        Intent intent = new Intent(this, CreateTaskActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
         startActivity(intent);
     }

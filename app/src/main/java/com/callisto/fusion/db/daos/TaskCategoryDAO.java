@@ -13,9 +13,9 @@ import com.callisto.fusion.db.entities.TaskCategory;
 public interface TaskCategoryDAO {
 
     @Insert
-    public long insertTaskCatagory(TaskCategory taskCategory);
+    long insertTaskCatagory(TaskCategory taskCategory);
 
     @Insert
-    public long[] insertTaskCategories(TaskCategory... taskCategory);
+    long[] insertTaskCategories(TaskCategory... taskCategory);
 
 }
