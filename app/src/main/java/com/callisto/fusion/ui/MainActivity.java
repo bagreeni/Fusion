@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -24,16 +25,13 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.callisto.fusion.ui.CreateTaskActivity;
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.taskRecyclerView);
+        mRecyclerView = findViewById(R.id.taskRecyclerView);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -107,34 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter = new RecyclerViewAdapter(fullTextTasks);
 
                 mRecyclerView.setAdapter(mAdapter);
-
-            }
-        });
-
-        // find a button on screen
-        FloatingActionButton addTask = findViewById(R.id.floatingAddTask);
-
-        // give the button a behavior
-        addTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String data = addTaskText.getText().toString().split(" ")[0];
-                String[] catList = addTaskText.getText().toString().split(" ")[1].split(",");
-
-                ArrayList<String> categoryList = new ArrayList<>(Arrays.asList(catList));
-
-                Date dueDate = new Date();
-
-                Date workDate = new Date();
-
-                DataRepository.getInstance().insertTextTask(data, categoryList, dueDate, workDate);
-                addTaskText.setText("");
-
-                if (view != null) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
 
             }
         });
@@ -178,35 +148,45 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
-            // Handle the camera action
+            // Handle the settings action
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void addMenuItem(){
-        NavigationView navView = findViewById(R.id.nav_view);
+        final NavigationView navView = findViewById(R.id.nav_view);
 
-        final Menu submenu = navView.getMenu().addSubMenu("New Super SubMenu");
+        final Menu menu = navView.getMenu();
 
-        LiveData<List<Category>> categories = DataRepository.getInstance().getAllCategories();
         ttViewModel.getCategories().observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(@Nullable List<Category> categories) {
                 // UI Changes happen here
 
-                for (Category category : categories) {
-                    submenu.add(category.getName());
+                menu.clear();
+                //public abstract MenuItem add(R.id.action_settings);
+               // navView.getMenu().add(R.id.action_settings);
+                for ( Category category : categories) {
+                    menu.add(category.getName()).setIcon(R.drawable.ic_bullet_point);
                 }
+
+                //add settings to bottom of nav drawer menu
+                navView.getMenu().findItem(R.id.action_settings);
+                navView.inflateMenu(R.menu.activity_nav_drawer_view);
 
             }
         });
-//        submenu.add("item1");
-//        submenu.add("item1");
-//        submenu.add("item1");
-
         navView.invalidate();
+
+
+    }
+
+    public void createTask(View view){
+        Intent intent = new Intent(this, CreateTaskActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        startActivity(intent);
     }
 }
