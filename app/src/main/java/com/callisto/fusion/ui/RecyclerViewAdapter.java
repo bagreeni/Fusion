@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.callisto.fusion.DataRepository;
@@ -21,6 +22,7 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private List<FullTextTask> data;
+    private Button deleteButton;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -57,6 +59,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ((TextView)holder.mTextView.findViewById(R.id.taskCategory)).setText(data.get(position).getCategoryList());
 
 
+
+
+    }
+
+    public void deleteTask(ViewHolder vh){
 
     }
 
