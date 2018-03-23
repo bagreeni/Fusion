@@ -63,13 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         //set item as selected to persist highlight
-                        item.setChecked(true);
+                        navigationView.setCheckedItem(item.getItemId());
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
 
@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
         // get UI elements
         final TextView textView = findViewById(R.id.textView);
-        final EditText addTaskText = findViewById(R.id.addTaskText);
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
@@ -149,10 +148,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.nav_settings) {
             // Handle the settings action
+        } else if (id == R.id.all_category){
+            // Handle the settings action
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -167,10 +169,16 @@ public class MainActivity extends AppCompatActivity {
                 // UI Changes happen here
 
                 menu.clear();
+
+                navView.getMenu().findItem(R.id.all_category);
+                navView.inflateMenu(R.menu.top_nav_drawer);
+
                 //public abstract MenuItem add(R.id.action_settings);
                // navView.getMenu().add(R.id.action_settings);
                 for ( Category category : categories) {
-                    menu.add(category.getName()).setIcon(R.drawable.ic_bullet_point);
+                    if(!category.getName().equals("default")) {
+                        menu.add(category.getName()).setIcon(R.drawable.ic_bullet_point);
+                    }
                 }
 
                 //add settings to bottom of nav drawer menu
