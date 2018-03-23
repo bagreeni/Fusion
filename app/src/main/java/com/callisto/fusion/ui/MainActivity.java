@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -144,10 +143,13 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        final NavigationView navigationView = findViewById(R.id.nav_view);
+
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
             // Handle the settings action
+
         } else if (id == R.id.all_category){
             // Handle the settings action
         }
