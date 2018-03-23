@@ -32,6 +32,7 @@ import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    // starts on default category
+    private String catMask = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         //set item as selected to persist highlight
-                        item.setChecked(true);
+                        navigationView.setCheckedItem(item.getItemId());
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
 
@@ -101,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
         ttViewModel.getFullTextTasks().observe(this, new Observer<List<FullTextTask>>() {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
+
+                List<FullTextTask> temp = new ArrayList<>();
+                for (FullTextTask ftt : fullTextTasks) {
+                    if (!ftt.getCategoryList().contains(catMask)) {
+                        temp.add(ftt);
+                    }
+                }
+                fullTextTasks.removeAll(temp);
 
                 mAdapter = new RecyclerViewAdapter(fullTextTasks);
 

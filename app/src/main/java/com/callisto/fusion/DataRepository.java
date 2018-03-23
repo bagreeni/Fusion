@@ -129,6 +129,23 @@ public class DataRepository {
         });
     }
 
+    // TODO make this
+    /*
+    public void deleteTextTask(final String textTaskName) {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
+                long id = db.textTaskDAO().getTextTask()
+                db.textTaskDAO().deleteTextTask()
+                category.setName(categoryName);
+
+                db.categoryDAO().insertCategory(category);
+
+            }
+        });
+    }
+    */
+
     private void initializeData() {
         dbExec.execute(new Runnable() {
             @Override
@@ -137,6 +154,7 @@ public class DataRepository {
                 if(db.categoryDAO().getCategoryMatchCount("default") == 0) {
                     Category defCat = new Category();
                     defCat.setName("default");
+                    defCat.setCategoryID(1);
 
                     db.categoryDAO().insertCategory(defCat);
                 }

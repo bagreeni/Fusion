@@ -43,6 +43,9 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         String taskText = taskTextBox.getText().toString();
         String rawCategoryList = taskCategoryBox.getText().toString();
+        if (!rawCategoryList.contains("default")) {
+            rawCategoryList = rawCategoryList.concat(",default");
+        }
 
         String[] categoryArray = rawCategoryList.split(",");
 
