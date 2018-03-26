@@ -50,30 +50,22 @@
             android:id="@+id/floatingAddTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="24dp"
             android:clickable="true"
+            android:focusable="true"
+            android:onClick="createTask"
             app:backgroundTint="@android:color/holo_green_dark"
             app:elevation="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/ic_menu_add" />
 
-        <EditText
-            android:id="@+id/addTaskText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Add Task"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/floatingAddTask"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <!-- A RecyclerView with some commonly used attributes -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/taskRecyclerView"
             android:layout_width="373dp"
             android:layout_height="456dp"
-            android:layout_marginBottom="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"

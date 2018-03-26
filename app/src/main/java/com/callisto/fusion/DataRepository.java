@@ -115,6 +115,30 @@ public class DataRepository {
         });
     }
 
+    public void deleteTextTask(final String taskText) {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                TextTask textTask = db.textTaskDAO().getTextTaskFromData(taskText);
+
+                long taskID = db.textTaskDAO().getTaskIDFromData(taskText);
+                Task task = db.taskDAO().getTaskFromID(taskID);
+
+                List<TaskCategory> taskCatList = db.taskCategoryDAO().getTaskCategoriesFromTaskID(taskID);
+
+                // begin removal
+
+                for (TaskCategory taskCategory : taskCatList) {
+                    db.taskCategoryDAO().deleteTaskCategory(taskCategory);
+                }
+                db.textTaskDAO().deleteTextTask(textTask);
+                db.taskDAO().deleteTask(task);
+
+            }
+        });
+    }
+
     public void insertCategory(final String categoryName) {
         dbExec.execute(new Runnable() {
             @Override

@@ -4,14 +4,13 @@ Team Software Project - Fusion
 This Android app is a task manager that is designed to be simple
 yet highly customizable.
 
-The paul branch is currently the same as master, and the "add a task" 
-button from the brook branch is present in both.  In these, enter a 
-task into the input field, and click on the button to add a task
-to the database.  
-
-In the maddie branch, it is possible to open a navigation drawer by
-either the the press of the nav drawer button in the upper left corner
-or through a left to right swipe.
+The app currently features a navigation drawer with a dynamic list of categories 
+associated with the tasks in the database.  Additionally, a user can input a task 
+using the add task button in the lower right corner of the main activity, which 
+will open up a new activity for entering a task and associated categories to be 
+added to the database.  Once a task is entered, the user can hit the "return" 
+button to go back to the main activity, where a recycler view is used to display
+tasks and their associated categories.  
 
 Brook Greening,
 Paul Wrubel,
