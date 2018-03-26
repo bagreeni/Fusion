@@ -23,7 +23,7 @@ public interface TaskCategoryDAO {
     List<TaskCategory> getTaskCategoriesFromTaskID(long tid);
 
     @Delete
-    long deleteTaskCategory(TaskCategory taskCategory);
+    int deleteTaskCategory(TaskCategory taskCategory);
 
     @Insert
     long[] insertTaskCategories(TaskCategory... taskCategory);
