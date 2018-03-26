@@ -57,7 +57,7 @@ public class DataRepository {
     }
 
     // handles all insertion procedures, including operating on a worker thread
-    public void insertTextTask(final String data, final List<String> categoryNames, final Date dueDate, final Date workDate) {
+    public void insertTextTask(final String data, final List<String> categoryNames, final int priority, final Date dueDate, final Date workDate) {
 
         dbExec.execute(new Runnable() {
             @Override
@@ -67,6 +67,7 @@ public class DataRepository {
                 Task task = new Task();
                 task.setDueDate(dueDate);
                 task.setDueDate(workDate);
+                task.setPriority(priority);
 
                 new Date();
 
