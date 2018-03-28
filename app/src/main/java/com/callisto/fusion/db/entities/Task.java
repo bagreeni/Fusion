@@ -18,8 +18,10 @@ public class Task {
     private long taskID;
     private Date dueDate;
     private Date workDate;
+    private int priority;
 
     // getters and setters
+
 
     public long getTaskID() {
         return taskID;
@@ -43,5 +45,13 @@ public class Task {
 
     public void setWorkDate(Date workDate) {
         this.workDate = workDate;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

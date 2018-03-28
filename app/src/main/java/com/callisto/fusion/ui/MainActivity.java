@@ -32,6 +32,7 @@ import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    // starts on default category
+    private String catMask = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
         ttViewModel.getFullTextTasks().observe(this, new Observer<List<FullTextTask>>() {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
+
+                List<FullTextTask> temp = new ArrayList<>();
+                for (FullTextTask ftt : fullTextTasks) {
+                    if (!ftt.getCategoryList().contains(catMask)) {
+                        temp.add(ftt);
+                    }
+                }
+                fullTextTasks.removeAll(temp);
 
                 mAdapter = new RecyclerViewAdapter(fullTextTasks);
 

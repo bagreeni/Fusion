@@ -21,6 +21,15 @@ public interface TextTaskDAO {
     @Query("SELECT * FROM TextTask")
     LiveData<List<TextTask>> getAllTextTasks();
 
+    @Query("SELECT * FROM TextTask WHERE data = :s")
+    TextTask getTextTaskFromData(String s);
+
+    @Query("SELECT textTaskID FROM TextTask WHERE data = :s")
+    long getTextTaskID(String s);
+
+    @Query("SELECT taskID FROM TextTask WHERE data = :s")
+    long getTaskIDFromData(String s);
+
     @Query( "SELECT taskID, dueDate, workDate, textTaskID, data, taskCategoryID, GROUP_CONCAT(categoryID) AS categoryIDList, GROUP_CONCAT(name) AS categoryList " +
             "FROM Task " +
             "NATURAL JOIN TextTask " +

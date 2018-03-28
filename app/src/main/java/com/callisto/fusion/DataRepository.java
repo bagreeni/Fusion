@@ -57,7 +57,7 @@ public class DataRepository {
     }
 
     // handles all insertion procedures, including operating on a worker thread
-    public void insertTextTask(final String data, final List<String> categoryNames, final Date dueDate, final Date workDate) {
+    public void insertTextTask(final String data, final List<String> categoryNames, final int priority, final Date dueDate, final Date workDate) {
 
         dbExec.execute(new Runnable() {
             @Override
@@ -67,6 +67,7 @@ public class DataRepository {
                 Task task = new Task();
                 task.setDueDate(dueDate);
                 task.setDueDate(workDate);
+                task.setPriority(priority);
 
                 new Date();
 
@@ -115,6 +116,30 @@ public class DataRepository {
         });
     }
 
+    public void deleteTextTask(final String taskText) {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                TextTask textTask = db.textTaskDAO().getTextTaskFromData(taskText);
+
+                long taskID = db.textTaskDAO().getTaskIDFromData(taskText);
+                Task task = db.taskDAO().getTaskFromID(taskID);
+
+                List<TaskCategory> taskCatList = db.taskCategoryDAO().getTaskCategoriesFromTaskID(taskID);
+
+                // begin removal
+
+                for (TaskCategory taskCategory : taskCatList) {
+                    db.taskCategoryDAO().deleteTaskCategory(taskCategory);
+                }
+                db.textTaskDAO().deleteTextTask(textTask);
+                db.taskDAO().deleteTask(task);
+
+            }
+        });
+    }
+
     public void insertCategory(final String categoryName) {
         dbExec.execute(new Runnable() {
             @Override
@@ -129,6 +154,23 @@ public class DataRepository {
         });
     }
 
+    // TODO make this
+    /*
+    public void deleteTextTask(final String textTaskName) {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
+                long id = db.textTaskDAO().getTextTask()
+                db.textTaskDAO().deleteTextTask()
+                category.setName(categoryName);
+
+                db.categoryDAO().insertCategory(category);
+
+            }
+        });
+    }
+    */
+
     private void initializeData() {
         dbExec.execute(new Runnable() {
             @Override
@@ -137,6 +179,7 @@ public class DataRepository {
                 if(db.categoryDAO().getCategoryMatchCount("default") == 0) {
                     Category defCat = new Category();
                     defCat.setName("default");
+                    defCat.setCategoryID(1);
 
                     db.categoryDAO().insertCategory(defCat);
                 }
