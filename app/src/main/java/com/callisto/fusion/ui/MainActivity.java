@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void createTask(View view){
+    public void openTaskEntryView(View view){
         Intent intent = new Intent(this, CreateTaskActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
         startActivity(intent);
