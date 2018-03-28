@@ -95,7 +95,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         String taskText = taskTextBox.getText().toString();
         String rawCategoryList = taskCategoryBox.getText().toString();
 
-        //int priority = Integer.getInteger(priorityBox.getText().toString());
+        int priority = Integer.parseInt(priorityBox.getText().toString());
         if (!rawCategoryList.contains("default")) {
             rawCategoryList = rawCategoryList.concat(",default");
         }
@@ -108,7 +108,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         List<String> categoryList = new ArrayList<>(Arrays.asList(categoryArray));
 
-        DataRepository.getInstance().insertTextTask(taskText, categoryList, 1, new Date(), new Date());
+        DataRepository.getInstance().insertTextTask(taskText, categoryList, priority, new Date(), new Date());
 
         //close keyboard
         if( view != null){

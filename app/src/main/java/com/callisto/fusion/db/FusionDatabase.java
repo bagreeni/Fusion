@@ -17,7 +17,7 @@ import com.callisto.fusion.db.entities.TextTask;
  * Created by voxaelfox on 2/28/18.
  */
 
-@Database(version = 3, entities = {Task.class, TextTask.class, Category.class, TaskCategory.class})
+@Database(version = 4, entities = {Task.class, TextTask.class, Category.class, TaskCategory.class})
 @TypeConverters({Converters.class})
 public abstract class FusionDatabase extends RoomDatabase {
 
