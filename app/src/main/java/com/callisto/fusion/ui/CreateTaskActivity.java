@@ -93,27 +93,35 @@ public class CreateTaskActivity extends AppCompatActivity {
         TextInputEditText priorityBox = findViewById(R.id.priority);
 
         String taskText = taskTextBox.getText().toString();
-        String rawCategoryList = taskCategoryBox.getText().toString();
+        if(taskText.equals("")){
+            return;
+        } else {
+            String rawCategoryList = taskCategoryBox.getText().toString();
+            int priority = 1;
+            if (priorityBox != null) {
+                priority = Integer.parseInt(priorityBox.getText().toString());
+            }
 
-        int priority = Integer.parseInt(priorityBox.getText().toString());
-        if (!rawCategoryList.contains("default")) {
-            rawCategoryList = rawCategoryList.concat(",default");
-        }
+            if (!rawCategoryList.contains("default")) {
+                rawCategoryList = rawCategoryList.concat(",default");
+            }
 
-        String[] categoryArray = rawCategoryList.split(",");
+            String[] categoryArray = rawCategoryList.split(",");
 
-        for (int i = 0; i < categoryArray.length; i++) {
-            categoryArray[i] = categoryArray[i].trim();
-        }
+            for (int i = 0; i < categoryArray.length; i++) {
+                categoryArray[i] = categoryArray[i].trim();
+            }
 
-        List<String> categoryList = new ArrayList<>(Arrays.asList(categoryArray));
+            List<String> categoryList = new ArrayList<>(Arrays.asList(categoryArray));
 
-        DataRepository.getInstance().insertTextTask(taskText, categoryList, priority, new Date(), new Date());
+            DataRepository.getInstance().insertTextTask(taskText, categoryList, priority, new Date(), new Date());
 
-        //close keyboard
-        if( view != null){
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+
+            //close keyboard
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 
