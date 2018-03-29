@@ -2,6 +2,7 @@ package com.callisto.fusion.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.renderscript.RenderScript;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
@@ -122,6 +123,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
+            returnToMainActivity(view);
         }
     }
 
@@ -137,5 +139,10 @@ public class CreateTaskActivity extends AppCompatActivity {
 
         dueDateBox.setText(sdf.format(myCalendar.getTime()));
     }
-
+    public void returnToMainActivity(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }
+
+
