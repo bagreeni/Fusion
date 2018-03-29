@@ -99,8 +99,8 @@ public class CreateTaskActivity extends AppCompatActivity {
         } else {
             String rawCategoryList = taskCategoryBox.getText().toString();
             int priority = 1;
-            if (priorityBox != null) {
-                priority = Integer.parseInt(priorityBox.getText().toString());
+            if (!(priorityBox.equals(""))) {
+                priority = priorityBox.getInputType();
             }
 
             if (!rawCategoryList.contains("default")) {
