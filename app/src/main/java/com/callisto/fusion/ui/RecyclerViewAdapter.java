@@ -1,5 +1,6 @@
 package com.callisto.fusion.ui;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,7 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private List<FullTextTask> data;
-    private Button deleteButton;
+    private Button doneButton;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -60,10 +61,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
 
-
-    }
-
-    public void deleteTask(ViewHolder vh){
 
     }
 
