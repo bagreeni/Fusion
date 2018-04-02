@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.helper.ItemTouchHelper.Callback;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +33,8 @@ import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
+import com.callisto.fusion.viewmodel.SwipeController;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
     // starts on default category
     private String catMask = "default";
 
+    //Swipe Controls
+    SwipeController swipeController = new SwipeController();
+
+    public ItemTouchHelper ith = new ItemTouchHelper(swipeController);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +70,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ith.attachToRecyclerView(mRecyclerView);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -158,10 +168,13 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        final NavigationView navigationView = findViewById(R.id.nav_view);
+
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
             // Handle the settings action
+
         } else if (id == R.id.all_category){
             // Handle the settings action
         }
@@ -206,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void createTask(View view){
+    public void openTaskEntryView(View view){
         Intent intent = new Intent(this, CreateTaskActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
         startActivity(intent);
