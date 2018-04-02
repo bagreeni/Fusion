@@ -53,11 +53,6 @@ public class MainActivity extends AppCompatActivity {
     // starts on default category
     private String catMask = "default";
 
-    //Swipe Controls
-    SwipeController swipeController = new SwipeController();
-
-    public ItemTouchHelper ith = new ItemTouchHelper(swipeController);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ith.attachToRecyclerView(mRecyclerView);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -104,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        //Swipe Controls
+        SwipeController swipeController = new SwipeController();
+        ItemTouchHelper ith = new ItemTouchHelper(swipeController);
+        ith.attachToRecyclerView(mRecyclerView);
 
         // specify an adapter (see also next example)
 
