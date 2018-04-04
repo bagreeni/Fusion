@@ -203,4 +203,8 @@ public class MainActivity extends AppCompatActivity {
         DataRepository.getInstance().deleteTextTask(taskText);
     }
 
+    public void colorChooser(){
+
+    }
+
 }
