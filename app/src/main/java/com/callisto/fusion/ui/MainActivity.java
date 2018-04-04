@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -219,7 +220,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void openTaskEntryView(View view){
         Intent intent = new Intent(this, CreateTaskActivity.class);
-        //EditText editText = (EditText) findViewById(R.id.editText);
         startActivity(intent);
     }
+
+    public void deleteTask(View view){
+        String taskText = (((TextView)((View)view.getParent()).findViewById(R.id.taskTitle)).getText().toString());
+        DataRepository.getInstance().deleteTextTask(taskText);
+    }
+
+    public void colorChooser(){
+
+    }
+
 }
