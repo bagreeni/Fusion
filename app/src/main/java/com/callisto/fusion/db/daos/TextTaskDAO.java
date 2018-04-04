@@ -1,6 +1,7 @@
 package com.callisto.fusion.db.daos;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -35,8 +36,28 @@ public interface TextTaskDAO {
             "NATURAL JOIN TextTask " +
             "NATURAL JOIN TaskCategory " +
             "NATURAL JOIN Category " +
+            "WHERE taskID IN (" +
+                "SELECT tc.taskID " +
+                "FROM TaskCategory AS tc " +
+                "NATURAL JOIN Category AS cat " +
+                "WHERE cat.name = :c" +
+            ") " +
             "GROUP BY taskID")
-    LiveData<List<FullTextTask>> getAllFullTextTasks();
+    LiveData<List<FullTextTask>> getAllFullTextTasksLD(String c);
+
+    @Query( "SELECT taskID, dueDate, workDate, textTaskID, data, taskCategoryID, GROUP_CONCAT(categoryID) AS categoryIDList, GROUP_CONCAT(name) AS categoryList " +
+            "FROM Task " +
+            "NATURAL JOIN TextTask " +
+            "NATURAL JOIN TaskCategory " +
+            "NATURAL JOIN Category " +
+            "WHERE taskID IN (" +
+                "SELECT tc.taskID " +
+                "FROM TaskCategory AS tc " +
+                "NATURAL JOIN Category AS cat " +
+                "WHERE cat.name = :c" +
+            ") " +
+            "GROUP BY taskID")
+    List<FullTextTask> getAllFullTextTasks(String c);
 
     @Insert
     long insertTextTask(TextTask textTask);

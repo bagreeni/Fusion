@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.helper.ItemTouchHelper.Callback;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +34,10 @@ import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
+import com.callisto.fusion.viewmodel.SwipeController;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    // starts on default category
+    private String catMask = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -73,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                         navigationView.setCheckedItem(item.getItemId());
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
+
+                        ttViewModel.updateFullTextTasks(item.getTitle().toString());
 
                         //add code here to update UI based on item selected
 
@@ -90,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        //Swipe Controls
+        SwipeController swipeController = new SwipeController();
+        ItemTouchHelper ith = new ItemTouchHelper(swipeController);
+        ith.attachToRecyclerView(mRecyclerView);
+
         // specify an adapter (see also next example)
 
 
@@ -98,9 +112,17 @@ public class MainActivity extends AppCompatActivity {
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
-        ttViewModel.getFullTextTasks().observe(this, new Observer<List<FullTextTask>>() {
+        ttViewModel.getFullTextTasks("default").observe(this, new Observer<List<FullTextTask>>() {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
+
+                List<FullTextTask> temp = new ArrayList<>();
+                for (FullTextTask ftt : fullTextTasks) {
+                    if (!ftt.getCategoryList().contains(catMask)) {
+                        temp.add(ftt);
+                    }
+                }
+                fullTextTasks.removeAll(temp);
 
                 mAdapter = new RecyclerViewAdapter(fullTextTasks);
 
@@ -145,10 +167,13 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        final NavigationView navigationView = findViewById(R.id.nav_view);
+
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
             // Handle the settings action
+
         } else if (id == R.id.all_category){
             // Handle the settings action
         }
@@ -193,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void createTask(View view){
+    public void openTaskEntryView(View view){
         Intent intent = new Intent(this, CreateTaskActivity.class);
         startActivity(intent);
     }

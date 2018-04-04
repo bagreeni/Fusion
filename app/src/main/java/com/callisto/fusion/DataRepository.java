@@ -1,7 +1,9 @@
 package com.callisto.fusion;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Room;
+import android.util.Log;
 
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.FusionDatabase;
@@ -44,12 +46,15 @@ public class DataRepository {
     }
 
     // database helper methods
-    public LiveData<List<TextTask>> getAllTextTasks() {
-        return db.textTaskDAO().getAllTextTasks();
-    }
 
-    public LiveData<List<FullTextTask>> getAllFullTextTasks() {
-        return db.textTaskDAO().getAllFullTextTasks();
+    public void updateFullTextTaskList(final MutableLiveData<List<FullTextTask>> mld, final String cat) {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<FullTextTask> list = db.textTaskDAO().getAllFullTextTasks(cat);
+                mld.postValue(list);
+            }
+        });
     }
 
     public LiveData<List<Category>> getAllCategories() {
@@ -57,7 +62,7 @@ public class DataRepository {
     }
 
     // handles all insertion procedures, including operating on a worker thread
-    public void insertTextTask(final String data, final List<String> categoryNames, final Date dueDate, final Date workDate) {
+    public void insertTextTask(final String data, final List<String> categoryNames, final int priority, final Date dueDate, final Date workDate) {
 
         dbExec.execute(new Runnable() {
             @Override
@@ -67,6 +72,7 @@ public class DataRepository {
                 Task task = new Task();
                 task.setDueDate(dueDate);
                 task.setDueDate(workDate);
+                task.setPriority(priority);
 
                 new Date();
 
@@ -161,6 +167,7 @@ public class DataRepository {
                 if(db.categoryDAO().getCategoryMatchCount("default") == 0) {
                     Category defCat = new Category();
                     defCat.setName("default");
+                    defCat.setCategoryID(1);
 
                     db.categoryDAO().insertCategory(defCat);
                 }
