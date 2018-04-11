@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
 
-                        ttViewModel.updateFullTextTasks(item.getTitle().toString());
+                        catMask = item.getTitle().toString();
+                        ttViewModel.updateFullTextTasks(catMask);
 
                         //add code here to update UI based on item selected
 
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
-        ttViewModel.getFullTextTasks("default").observe(this, new Observer<List<FullTextTask>>() {
+        ttViewModel.getFullTextTasks(catMask).observe(this, new Observer<List<FullTextTask>>() {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
 
@@ -226,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
     public void deleteTask(View view){
         String taskText = (((TextView)((View)view.getParent()).findViewById(R.id.taskTitle)).getText().toString());
         DataRepository.getInstance().deleteTextTask(taskText);
+
+        ttViewModel.updateFullTextTasks(catMask);
     }
 
     public void colorChooser(){
