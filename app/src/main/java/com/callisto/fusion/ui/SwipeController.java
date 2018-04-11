@@ -3,6 +3,7 @@ package com.callisto.fusion.ui;
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -32,10 +33,12 @@ public class SwipeController extends Callback {
 
     }
 
+    @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
         if (actionState == ACTION_STATE_SWIPE){
             setTouchListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
+        Log.d("SWIPE", "dx: " + dX + ", dy: " + dY);
         super.onChildDraw(c, recyclerView, viewHolder, dX,dY, actionState,isCurrentlyActive);
     }
 

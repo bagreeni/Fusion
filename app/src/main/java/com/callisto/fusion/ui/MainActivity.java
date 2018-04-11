@@ -44,11 +44,6 @@ public class MainActivity extends AppCompatActivity {
     // starts on default category
     private String catMask = "default";
 
-    //Swipe Controls
-    SwipeController swipeController = new SwipeController();
-
-    public ItemTouchHelper ith = new ItemTouchHelper(swipeController);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ith.attachToRecyclerView(mRecyclerView);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -77,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
                         navigationView.setCheckedItem(item.getItemId());
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
+
+                        ttViewModel.updateFullTextTasks(item.getTitle().toString());
 
                         //add code here to update UI based on item selected
 
@@ -94,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        //Swipe Controls
+        SwipeController swipeController = new SwipeController();
+        ItemTouchHelper ith = new ItemTouchHelper(swipeController);
+        ith.attachToRecyclerView(mRecyclerView);
+
         // specify an adapter (see also next example)
 
 
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
-        ttViewModel.getFullTextTasks().observe(this, new Observer<List<FullTextTask>>() {
+        ttViewModel.getFullTextTasks("default").observe(this, new Observer<List<FullTextTask>>() {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
 

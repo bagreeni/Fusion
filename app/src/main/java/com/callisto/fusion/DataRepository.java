@@ -1,7 +1,9 @@
 package com.callisto.fusion;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Room;
+import android.util.Log;
 
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.FusionDatabase;
@@ -44,12 +46,15 @@ public class DataRepository {
     }
 
     // database helper methods
-    public LiveData<List<TextTask>> getAllTextTasks() {
-        return db.textTaskDAO().getAllTextTasks();
-    }
 
-    public LiveData<List<FullTextTask>> getAllFullTextTasks() {
-        return db.textTaskDAO().getAllFullTextTasks();
+    public void updateFullTextTaskList(final MutableLiveData<List<FullTextTask>> mld, final String cat) {
+        dbExec.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<FullTextTask> list = db.textTaskDAO().getAllFullTextTasks(cat);
+                mld.postValue(list);
+            }
+        });
     }
 
     public LiveData<List<Category>> getAllCategories() {
@@ -153,23 +158,6 @@ public class DataRepository {
             }
         });
     }
-
-    // TODO make this
-    /*
-    public void deleteTextTask(final String textTaskName) {
-        dbExec.execute(new Runnable() {
-            @Override
-            public void run() {
-                long id = db.textTaskDAO().getTextTask()
-                db.textTaskDAO().deleteTextTask()
-                category.setName(categoryName);
-
-                db.categoryDAO().insertCategory(category);
-
-            }
-        });
-    }
-    */
 
     private void initializeData() {
         dbExec.execute(new Runnable() {

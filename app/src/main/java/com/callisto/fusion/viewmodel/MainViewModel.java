@@ -1,37 +1,35 @@
 package com.callisto.fusion.viewmodel;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
-import com.callisto.fusion.db.entities.TextTask;
 
 import java.util.List;
 
 /**
+ *
  * Created by voxaelfox on 3/3/18.
  */
 
 public class MainViewModel extends ViewModel {
-    private LiveData<List<TextTask>> textTasks;
-    private LiveData<List<FullTextTask>> fullTextTasks;
+    private MutableLiveData<List<FullTextTask>> fullTextTasks;
     private LiveData<List<Category>> categories;
 
 
-    public LiveData<List<TextTask>> getTextTasks() {
-        if (textTasks == null) {
-            textTasks = DataRepository.getInstance().getAllTextTasks();
-        }
-        return textTasks;
-    }
-
-    public LiveData<List<FullTextTask>> getFullTextTasks() {
+    public MutableLiveData<List<FullTextTask>> getFullTextTasks(String cat) {
         if (fullTextTasks == null) {
-            fullTextTasks = DataRepository.getInstance().getAllFullTextTasks();
+            fullTextTasks = new MutableLiveData<>();
+            DataRepository.getInstance().updateFullTextTaskList(fullTextTasks, cat);
         }
         return fullTextTasks;
+    }
+
+    public void updateFullTextTasks(String cm) {
+        DataRepository.getInstance().updateFullTextTaskList(fullTextTasks, cm);
     }
 
     public LiveData<List<Category>> getCategories() {
