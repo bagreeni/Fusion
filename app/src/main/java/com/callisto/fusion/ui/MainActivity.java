@@ -71,7 +71,11 @@ public class MainActivity extends AppCompatActivity {
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
 
-                        ttViewModel.updateFullTextTasks(item.getTitle().toString());
+                        if (item.getTitle().toString().equals("All Categories")) {
+                            ttViewModel.updateFullTextTasks("default");
+                        } else {
+                            ttViewModel.updateFullTextTasks(item.getTitle().toString().toLowerCase());
+                        }
 
                         //add code here to update UI based on item selected
 
@@ -193,9 +197,11 @@ public class MainActivity extends AppCompatActivity {
                // navView.getMenu().add(R.id.action_settings);
                 for ( Category category : categories) {
                     if(!category.getName().equals("default")) {
-                        menu.add(category.getName()).setIcon(R.drawable.ic_bullet_point);
+                        String name = category.getName().substring(0, 1).toUpperCase().concat(category.getName().substring(1));
+                        menu.add(name);
                     }
                 }
+
 
                 //add settings to bottom of nav drawer menu
                 navView.getMenu().findItem(R.id.action_settings);
