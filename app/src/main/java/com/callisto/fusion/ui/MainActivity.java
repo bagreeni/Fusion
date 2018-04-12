@@ -1,14 +1,11 @@
 package com.callisto.fusion.ui;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,21 +17,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.support.v7.widget.helper.ItemTouchHelper.Callback;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
-import com.callisto.fusion.ui.CreateTaskActivity;
+
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
-import com.callisto.fusion.viewmodel.SwipeController;
 
 
 import java.util.ArrayList;
@@ -81,8 +73,12 @@ public class MainActivity extends AppCompatActivity {
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
 
-                        catMask = item.getTitle().toString();
-                        ttViewModel.updateFullTextTasks(catMask);
+                        catMask = item.getTitle().toString().toLowerCase();
+                        if (catMask.equals("All Categories")) {
+                            ttViewModel.updateFullTextTasks("default");
+                        } else {
+                            ttViewModel.updateFullTextTasks(catMask.toLowerCase());
+                        }
 
                         //add code here to update UI based on item selected
 
@@ -204,9 +200,11 @@ public class MainActivity extends AppCompatActivity {
                // navView.getMenu().add(R.id.action_settings);
                 for ( Category category : categories) {
                     if(!category.getName().equals("default")) {
-                        menu.add(category.getName()).setIcon(R.drawable.ic_bullet_point);
+                        String name = category.getName().substring(0, 1).toUpperCase().concat(category.getName().substring(1));
+                        menu.add(name);
                     }
                 }
+
 
                 //add settings to bottom of nav drawer menu
                 navView.getMenu().findItem(R.id.action_settings);
