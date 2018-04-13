@@ -2,12 +2,22 @@ package com.callisto.fusion.ui;
 
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
+
+import com.callisto.fusion.DataRepository;
+import com.callisto.fusion.R;
+import com.callisto.fusion.db.entities.FullTextTask;
+import com.callisto.fusion.viewmodel.MainViewModel;
+
+import java.io.Serializable;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.*;
 
@@ -19,9 +29,9 @@ import static android.support.v7.widget.helper.ItemTouchHelper.*;
 public class SwipeController extends Callback {
 
     boolean swipeBack;
-    AppCompatActivity activity;
+    MainActivity activity;
 
-    public SwipeController(AppCompatActivity activity) {
+    public SwipeController(MainActivity activity) {
         this.activity = activity;
     }
 
@@ -37,9 +47,15 @@ public class SwipeController extends Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        Intent intent = new Intent(activity, MoreActivity.class);
-      //  intent.putExtra("TASKID", viewHolder.itemView.get)
-        activity.startActivity(intent);
+        Log.d("SWIPED", "DIR: " + direction);
+        if(direction == RIGHT ) {
+            Intent intent = new Intent(activity, MoreActivity.class);
+            intent.putExtra("TASKDATA", (Parcelable) viewHolder.itemView.getTag());
+            activity.startActivity(intent);
+        } else if(direction == LEFT){
+
+            activity.deleteTask(viewHolder.itemView);
+        }
     }
 
     @Override
@@ -47,7 +63,6 @@ public class SwipeController extends Callback {
         if (actionState == ACTION_STATE_SWIPE){
             setTouchListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
-        Log.d("SWIPE", "dx: " + dX + ", dy: " + dY);
         super.onChildDraw(c, recyclerView, viewHolder, dX,dY, actionState,isCurrentlyActive);
     }
 
@@ -61,12 +76,12 @@ public class SwipeController extends Callback {
         });
     }
 
-    public int convertToAbsoluteDirection(int flags, int layoutDirection){
-        if(swipeBack){
-            swipeBack = false;
-            return 0;
-        }
-        return super.convertToAbsoluteDirection(flags, layoutDirection);
-    }
+//    public int convertToAbsoluteDirection(int flags, int layoutDirection){
+//        if(swipeBack){
+//            swipeBack = false;
+//            return 0;
+//        }
+//        return super.convertToAbsoluteDirection(flags, layoutDirection);
+//    }
 
 }

@@ -219,7 +219,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteTask(View view){
-        String taskText = (((TextView)((View)view.getParent()).findViewById(R.id.taskTitle)).getText().toString());
+        String taskText = (((TextView)view.findViewById(R.id.taskTitle)).getText().toString());
+        Log.d("DELETE", "Text: " + taskText);
         DataRepository.getInstance().deleteTextTask(taskText);
 
         ttViewModel.updateFullTextTasks(catMask);
