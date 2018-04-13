@@ -107,8 +107,10 @@ public class CreateTaskActivity extends AppCompatActivity {
                 priority = priorityBox.getInputType();
             }
 
-            if (!rawCategoryList.contains("default")) {
+            if (!rawCategoryList.contains("default") && !rawCategoryList.trim().isEmpty()) {
                 rawCategoryList = rawCategoryList.concat(",default");
+            } else if (rawCategoryList.trim().isEmpty()) {
+                rawCategoryList = rawCategoryList.concat("default");
             }
 
             String[] categoryArray = rawCategoryList.split(",");

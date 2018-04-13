@@ -18,7 +18,6 @@ public class FullTextTask implements Parcelable {
     private long taskID;
     private Date dueDate;
     private Date workDate;
-    private int priority;
 
     // from TextTask
     private long textTaskID;
@@ -30,6 +29,9 @@ public class FullTextTask implements Parcelable {
     // from Category
     private String categoryIDList;
     private String categoryList;
+
+    // extra
+    private int priority;
 
     // getters and setters
 

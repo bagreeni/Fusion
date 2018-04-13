@@ -128,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        refreshList();
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -223,6 +229,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d("DELETE", "Text: " + taskText);
         DataRepository.getInstance().deleteTextTask(taskText);
 
+        refreshList();
+    }
+
+    public void refreshList() {
         ttViewModel.updateFullTextTasks(catMask);
     }
 }
