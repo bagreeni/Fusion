@@ -108,8 +108,7 @@ public class MainActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
 
 
-        // get UI elements
-        final TextView textView = findViewById(R.id.textView);
+
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
