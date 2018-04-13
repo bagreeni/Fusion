@@ -2,6 +2,7 @@ package com.callisto.fusion.ui;
 
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
@@ -12,7 +13,10 @@ import android.widget.TextView;
 
 import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
+import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.viewmodel.MainViewModel;
+
+import java.io.Serializable;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.*;
 
@@ -48,7 +52,7 @@ public class SwipeController extends Callback {
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         if(direction == RIGHT ) {
             Intent intent = new Intent(activity, MoreActivity.class);
-            intent.putExtra("TASKID", Long.parseLong(((TextView)viewHolder.itemView.findViewById(R.id.taskId)).getText().toString()));
+            intent.putExtra("TASKDATA", (Serializable) viewHolder.itemView.getTag());
             activity.startActivity(intent);
         }else if(direction == LEFT){
             String taskText = (((TextView)((View)viewHolder.itemView.getParent()).findViewById(R.id.taskTitle)).getText().toString());

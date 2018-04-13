@@ -1,12 +1,13 @@
 package com.callisto.fusion.db.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by voxaelfox on 3/6/18.
  */
 
-public class FullTextTask {
+public class FullTextTask implements Serializable {
 
     // fields
 
