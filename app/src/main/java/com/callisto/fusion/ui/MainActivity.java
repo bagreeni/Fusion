@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
@@ -219,8 +220,5 @@ public class MainActivity extends AppCompatActivity {
         DataRepository.getInstance().deleteTextTask(taskText);
     }
 
-    public void colorChooser(){
-
-    }
 
 }
