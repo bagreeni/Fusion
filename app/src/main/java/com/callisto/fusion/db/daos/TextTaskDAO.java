@@ -6,9 +6,12 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.callisto.fusion.db.entities.FullTextTask;
 import com.callisto.fusion.db.entities.TextTask;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -24,6 +27,9 @@ public interface TextTaskDAO {
 
     @Query("SELECT * FROM TextTask WHERE data = :s")
     TextTask getTextTaskFromData(String s);
+
+    @Query("SELECT * FROM TextTask WHERE taskID = :t")
+    TextTask getTextTaskFromTaskID(long t);
 
     @Query("SELECT textTaskID FROM TextTask WHERE data = :s")
     long getTextTaskID(String s);
@@ -58,6 +64,9 @@ public interface TextTaskDAO {
             ") " +
             "GROUP BY taskID")
     List<FullTextTask> getAllFullTextTasks(String c);
+
+    @Update
+    void updateTextTask(TextTask textTask);
 
     @Insert
     long insertTextTask(TextTask textTask);

@@ -1,12 +1,15 @@
 package com.callisto.fusion.db.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * Created by voxaelfox on 3/6/18.
  */
 
-public class FullTextTask {
+public class FullTextTask implements Parcelable {
 
     // fields
 
@@ -105,4 +108,47 @@ public class FullTextTask {
                 " | categoryList: " + categoryList;
     }
 
+
+    protected FullTextTask(Parcel in) {
+        taskID = in.readLong();
+        long tmpDueDate = in.readLong();
+        dueDate = tmpDueDate != -1 ? new Date(tmpDueDate) : null;
+        long tmpWorkDate = in.readLong();
+        workDate = tmpWorkDate != -1 ? new Date(tmpWorkDate) : null;
+        textTaskID = in.readLong();
+        data = in.readString();
+        taskCategoryID = in.readLong();
+        categoryIDList = in.readString();
+        categoryList = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(taskID);
+        dest.writeLong(dueDate != null ? dueDate.getTime() : -1L);
+        dest.writeLong(workDate != null ? workDate.getTime() : -1L);
+        dest.writeLong(textTaskID);
+        dest.writeString(data);
+        dest.writeLong(taskCategoryID);
+        dest.writeString(categoryIDList);
+        dest.writeString(categoryList);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<FullTextTask> CREATOR = new Parcelable.Creator<FullTextTask>() {
+        @Override
+        public FullTextTask createFromParcel(Parcel in) {
+            return new FullTextTask(in);
+        }
+
+        @Override
+        public FullTextTask[] newArray(int size) {
+            return new FullTextTask[size];
+        }
+    };
 }

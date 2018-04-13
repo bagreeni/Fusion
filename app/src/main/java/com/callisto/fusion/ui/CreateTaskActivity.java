@@ -29,6 +29,8 @@ import java.util.Locale;
 public class CreateTaskActivity extends AppCompatActivity {
 
     Calendar myCalendar;
+    Date workDate;
+    Date dueDate;
     EditText workDateBox, dueDateBox;
 
     @Override
@@ -53,6 +55,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, month);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                workDate = myCalendar.getTime();
                 updateLabelWork();
             }
         };
@@ -63,6 +66,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, month);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dueDate = myCalendar.getTime();
                 updateLabelDue();
             }
         };
@@ -115,7 +119,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
             List<String> categoryList = new ArrayList<>(Arrays.asList(categoryArray));
 
-            DataRepository.getInstance().insertTextTask(taskText, categoryList, priority, new Date(), new Date());
+            DataRepository.getInstance().insertTextTask(taskText, categoryList, priority, dueDate, workDate);
 
 
             //close keyboard
