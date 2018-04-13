@@ -1,6 +1,8 @@
 package com.callisto.fusion.ui;
 
+import android.content.Intent;
 import android.graphics.Canvas;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
 import android.util.Log;
@@ -17,6 +19,11 @@ import static android.support.v7.widget.helper.ItemTouchHelper.*;
 public class SwipeController extends Callback {
 
     boolean swipeBack;
+    AppCompatActivity activity;
+
+    public SwipeController(AppCompatActivity activity) {
+        this.activity = activity;
+    }
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -30,7 +37,9 @@ public class SwipeController extends Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
+        Intent intent = new Intent(activity, MoreActivity.class);
+      //  intent.putExtra("TASKID", viewHolder.itemView.get)
+        activity.startActivity(intent);
     }
 
     @Override
@@ -59,4 +68,5 @@ public class SwipeController extends Callback {
         }
         return super.convertToAbsoluteDirection(flags, layoutDirection);
     }
+
 }

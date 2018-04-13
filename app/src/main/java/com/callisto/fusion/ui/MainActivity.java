@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         //Swipe Controls
-        SwipeController swipeController = new SwipeController();
+        SwipeController swipeController = new SwipeController(this);
         ItemTouchHelper ith = new ItemTouchHelper(swipeController);
         ith.attachToRecyclerView(mRecyclerView);
 
@@ -219,4 +219,5 @@ public class MainActivity extends AppCompatActivity {
         //EditText editText = (EditText) findViewById(R.id.editText);
         startActivity(intent);
     }
+
 }

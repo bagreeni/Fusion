@@ -57,7 +57,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ((TextView)holder.mTextView.findViewById(R.id.taskCategory)).setText(data.get(position).getCategoryList());
 
 
-
     }
 
     @Override
