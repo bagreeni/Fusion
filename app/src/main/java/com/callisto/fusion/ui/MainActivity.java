@@ -207,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-
                 //add settings to bottom of nav drawer menu
                 navView.getMenu().findItem(R.id.action_settings);
                 navView.inflateMenu(R.menu.activity_nav_drawer_view);

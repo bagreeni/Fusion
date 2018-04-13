@@ -116,7 +116,7 @@ public class CreateTaskActivity extends AppCompatActivity {
             String[] categoryArray = rawCategoryList.split(",");
 
             for (int i = 0; i < categoryArray.length; i++) {
-                categoryArray[i] = categoryArray[i].trim();
+                categoryArray[i] = categoryArray[i].trim().toLowerCase();
             }
 
             List<String> categoryList = new ArrayList<>(Arrays.asList(categoryArray));
