@@ -47,7 +47,7 @@ public class MoreActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.editCategories)).setText(ftt.getCategoryList());
         ((TextView)findViewById(R.id.editDueDate)).setText(ftt.getDueDate().toString());
         ((TextView)findViewById(R.id.editWorkDate)).setText(ftt.getWorkDate().toString());
-        ((TextView)findViewById(R.id.editPriority)).setText(ftt);
+        ((TextView)findViewById(R.id.editPriority)).setText(ftt.getPriority());
 
         myCalendar = Calendar.getInstance();
         workDateBox = findViewById(R.id.editWorkDate);
@@ -103,8 +103,9 @@ public class MoreActivity extends AppCompatActivity {
     public void editTask(View v){
         String[] array = ((TextView) ((View) v.getParent()).findViewById(R.id.editCategories)).getText().toString().split(",");
         List list = Arrays.asList(array);
+        int priority = Integer.valueOf(((TextView)findViewById(R.id.editPriority)).getText().toString());
 
-        DataRepository.getInstance().editTextTask(ftt.getTaskID(),((TextView)findViewById(R.id.editText)).getText(),list, workDate, dueDate, );
+        DataRepository.getInstance().editTextTask(ftt.getTaskID(),((TextView)findViewById(R.id.editText)).getText().toString(),list, workDate, dueDate, priority);
     }
 
     private void updateLabelWork(){
