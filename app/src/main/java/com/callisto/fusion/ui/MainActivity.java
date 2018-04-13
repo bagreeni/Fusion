@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +74,15 @@ public class MainActivity extends AppCompatActivity {
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
 
-                        ttViewModel.updateFullTextTasks(item.getTitle().toString());
+                        catMask = item.getTitle().toString().toLowerCase();
+                        Log.d("SELECT CAT", catMask);
+                        if (catMask.equals("all categories")) {
+                            ttViewModel.updateFullTextTasks("default");
+                            Log.d("CATCHECK", "default!");
+                        } else {
+                            ttViewModel.updateFullTextTasks(catMask);
+                            Log.d("CATCHECK", "other! - " + catMask);
+                        }
 
                         //add code here to update UI based on item selected
 
@@ -104,17 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
-        ttViewModel.getFullTextTasks("default").observe(this, new Observer<List<FullTextTask>>() {
+        ttViewModel.getFullTextTasks(catMask).observe(this, new Observer<List<FullTextTask>>() {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
-
-                List<FullTextTask> temp = new ArrayList<>();
-                for (FullTextTask ftt : fullTextTasks) {
-                    if (!ftt.getCategoryList().contains(catMask)) {
-                        temp.add(ftt);
-                    }
-                }
-                fullTextTasks.removeAll(temp);
 
                 mAdapter = new RecyclerViewAdapter(fullTextTasks);
 
@@ -195,9 +196,11 @@ public class MainActivity extends AppCompatActivity {
                // navView.getMenu().add(R.id.action_settings);
                 for ( Category category : categories) {
                     if(!category.getName().equals("default")) {
-                        menu.add(category.getName()).setIcon(R.drawable.ic_bullet_point);
+                        String name = category.getName().substring(0, 1).toUpperCase().concat(category.getName().substring(1));
+                        menu.add(name);
                     }
                 }
+
 
                 //add settings to bottom of nav drawer menu
                 navView.getMenu().findItem(R.id.action_settings);
@@ -218,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
     public void deleteTask(View view){
         String taskText = (((TextView)((View)view.getParent()).findViewById(R.id.taskTitle)).getText().toString());
         DataRepository.getInstance().deleteTextTask(taskText);
+
+        ttViewModel.updateFullTextTasks(catMask);
     }
 
 
