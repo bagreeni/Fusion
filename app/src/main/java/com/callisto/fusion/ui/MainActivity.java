@@ -3,6 +3,7 @@ package com.callisto.fusion.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -16,11 +17,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.callisto.fusion.DataRepository;
 import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.Category;
 import com.callisto.fusion.db.entities.FullTextTask;
@@ -71,10 +74,14 @@ public class MainActivity extends AppCompatActivity {
                         //close drawer when item tapped
                         mDrawerLayout.closeDrawers();
 
-                        if (item.getTitle().toString().equals("All Categories")) {
+                        catMask = item.getTitle().toString().toLowerCase();
+                        Log.d("SELECT CAT", catMask);
+                        if (catMask.equals("all categories")) {
                             ttViewModel.updateFullTextTasks("default");
+                            Log.d("CATCHECK", "default!");
                         } else {
-                            ttViewModel.updateFullTextTasks(item.getTitle().toString().toLowerCase());
+                            ttViewModel.updateFullTextTasks(catMask);
+                            Log.d("CATCHECK", "other! - " + catMask);
                         }
 
                         //add code here to update UI based on item selected
@@ -106,17 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
         // attach an observer to database lists
         // in this case, a list of TextTasks
-        ttViewModel.getFullTextTasks("default").observe(this, new Observer<List<FullTextTask>>() {
+        ttViewModel.getFullTextTasks(catMask).observe(this, new Observer<List<FullTextTask>>() {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
-
-                List<FullTextTask> temp = new ArrayList<>();
-                for (FullTextTask ftt : fullTextTasks) {
-                    if (!ftt.getCategoryList().contains(catMask)) {
-                        temp.add(ftt);
-                    }
-                }
-                fullTextTasks.removeAll(temp);
 
                 mAdapter = new RecyclerViewAdapter(fullTextTasks);
 
@@ -216,8 +215,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void openTaskEntryView(View view){
         Intent intent = new Intent(this, CreateTaskActivity.class);
-        //EditText editText = (EditText) findViewById(R.id.editText);
         startActivity(intent);
     }
 
+    public void deleteTask(View view){
+        String taskText = (((TextView)((View)view.getParent()).findViewById(R.id.taskTitle)).getText().toString());
+        DataRepository.getInstance().deleteTextTask(taskText);
+
+        ttViewModel.updateFullTextTasks(catMask);
+    }
 }
