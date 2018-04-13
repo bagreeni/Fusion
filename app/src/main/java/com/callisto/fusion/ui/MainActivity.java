@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,10 +75,13 @@ public class MainActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
 
                         catMask = item.getTitle().toString().toLowerCase();
-                        if (catMask.equals("All Categories")) {
+                        Log.d("SELECT CAT", catMask);
+                        if (catMask.equals("all categories")) {
                             ttViewModel.updateFullTextTasks("default");
+                            Log.d("CATCHECK", "default!");
                         } else {
-                            ttViewModel.updateFullTextTasks(catMask.toLowerCase());
+                            ttViewModel.updateFullTextTasks(catMask);
+                            Log.d("CATCHECK", "other! - " + catMask);
                         }
 
                         //add code here to update UI based on item selected
@@ -112,14 +116,6 @@ public class MainActivity extends AppCompatActivity {
         ttViewModel.getFullTextTasks(catMask).observe(this, new Observer<List<FullTextTask>>() {
             @Override
             public void onChanged(@Nullable final List<FullTextTask> fullTextTasks) {
-
-                List<FullTextTask> temp = new ArrayList<>();
-                for (FullTextTask ftt : fullTextTasks) {
-                    if (!ftt.getCategoryList().contains(catMask)) {
-                        temp.add(ftt);
-                    }
-                }
-                fullTextTasks.removeAll(temp);
 
                 mAdapter = new RecyclerViewAdapter(fullTextTasks);
 
