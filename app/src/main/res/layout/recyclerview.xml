@@ -40,7 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="32dp"
-        android:text="10/31/2097"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/doneButton"
         app:layout_constraintStart_toStartOf="parent"
