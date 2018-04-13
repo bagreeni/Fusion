@@ -37,7 +37,7 @@ public interface TextTaskDAO {
     @Query("SELECT taskID FROM TextTask WHERE data = :s")
     long getTaskIDFromData(String s);
 
-    @Query( "SELECT taskID, dueDate, workDate, textTaskID, data, taskCategoryID, GROUP_CONCAT(categoryID) AS categoryIDList, GROUP_CONCAT(name) AS categoryList " +
+    @Query( "SELECT taskID, dueDate, workDate, textTaskID, data, taskCategoryID, GROUP_CONCAT(categoryID) AS categoryIDList, GROUP_CONCAT(name) AS categoryList, priority " +
             "FROM Task " +
             "NATURAL JOIN TextTask " +
             "NATURAL JOIN TaskCategory " +
@@ -51,7 +51,7 @@ public interface TextTaskDAO {
             "GROUP BY taskID")
     LiveData<List<FullTextTask>> getAllFullTextTasksLD(String c);
 
-    @Query( "SELECT taskID, dueDate, workDate, textTaskID, data, taskCategoryID, GROUP_CONCAT(categoryID) AS categoryIDList, GROUP_CONCAT(name) AS categoryList " +
+    @Query( "SELECT taskID, dueDate, workDate, textTaskID, data, taskCategoryID, GROUP_CONCAT(categoryID) AS categoryIDList, GROUP_CONCAT(name) AS categoryList, priority " +
             "FROM Task " +
             "NATURAL JOIN TextTask " +
             "NATURAL JOIN TaskCategory " +

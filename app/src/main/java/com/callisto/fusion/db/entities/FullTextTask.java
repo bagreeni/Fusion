@@ -1,5 +1,6 @@
 package com.callisto.fusion.db.entities;
 
+import android.arch.persistence.room.Ignore;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -17,6 +18,7 @@ public class FullTextTask implements Parcelable {
     private long taskID;
     private Date dueDate;
     private Date workDate;
+    private int priority;
 
     // from TextTask
     private long textTaskID;
@@ -95,6 +97,14 @@ public class FullTextTask implements Parcelable {
         this.categoryList = categoryList;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     // for debugging
     @Override
     public String toString() {
@@ -105,10 +115,11 @@ public class FullTextTask implements Parcelable {
                 " | data: " + data +
                 " | taskCategoryID: " + taskCategoryID +
                 " | categoryIDList: " + categoryIDList +
-                " | categoryList: " + categoryList;
+                " | categoryList: " + categoryList +
+                " | priority: " + priority;
     }
 
-
+    @Ignore
     protected FullTextTask(Parcel in) {
         taskID = in.readLong();
         long tmpDueDate = in.readLong();
@@ -120,6 +131,11 @@ public class FullTextTask implements Parcelable {
         taskCategoryID = in.readLong();
         categoryIDList = in.readString();
         categoryList = in.readString();
+        priority = in.readInt();
+    }
+
+    public FullTextTask() {
+
     }
 
     @Override
@@ -137,6 +153,7 @@ public class FullTextTask implements Parcelable {
         dest.writeLong(taskCategoryID);
         dest.writeString(categoryIDList);
         dest.writeString(categoryList);
+        dest.writeInt(priority);
     }
 
     @SuppressWarnings("unused")

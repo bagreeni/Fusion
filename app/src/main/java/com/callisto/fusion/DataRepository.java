@@ -168,12 +168,44 @@ public class DataRepository {
 
                 db.textTaskDAO().updateTextTask(ttask);
 
-                List<TaskCategory> taskCatList = db.taskCategoryDAO().getTaskCategoriesFromTaskID(taskID);
+
+                // Remove categories
+                List<TaskCategory> taskCatList = db.taskCategoryDAO().getTaskCategoriesFromTaskID(task.getTaskID());
 
                 // begin removal
 
                 for (TaskCategory taskCategory : taskCatList) {
                     db.taskCategoryDAO().deleteTaskCategory(taskCategory);
+                }
+
+                // Refill Categories
+
+                // for each category in the given list:
+                // check if category exists, create if not
+                // to get categoryID for TaskCategory link
+                // create entry in TaskCategory
+
+                TaskCategory taskCategory = new TaskCategory();
+                taskCategory.taskID = task.getTaskID();
+
+                for (String categoryName : categories) {
+
+                    long categoryID;
+                    if (db.categoryDAO().getCategoryMatchCount(categoryName) == 0) {
+                        Category category = new Category();
+                        category.setName(categoryName);
+
+                        categoryID = db.categoryDAO().insertCategory(category);
+                    } else {
+                        categoryID = db.categoryDAO().getCategoryID(categoryName);
+                    }
+
+                    // attach category link
+                    taskCategory.categoryID = categoryID;
+
+                    // insert new TaskCategory link into db
+                    db.taskCategoryDAO().insertTaskCatagory(taskCategory);
+
                 }
 
 

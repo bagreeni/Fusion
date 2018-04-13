@@ -3,6 +3,7 @@ package com.callisto.fusion.ui;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
@@ -28,13 +29,9 @@ import static android.support.v7.widget.helper.ItemTouchHelper.*;
 public class SwipeController extends Callback {
 
     boolean swipeBack;
-    AppCompatActivity activity;
-    private String catMask = "default";
-    private MainViewModel ttViewModel;
+    MainActivity activity;
 
-
-
-    public SwipeController(AppCompatActivity activity) {
+    public SwipeController(MainActivity activity) {
         this.activity = activity;
     }
 
@@ -50,15 +47,14 @@ public class SwipeController extends Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        Log.d("SWIPED", "DIR: " + direction);
         if(direction == RIGHT ) {
             Intent intent = new Intent(activity, MoreActivity.class);
-            intent.putExtra("TASKDATA", (Serializable) viewHolder.itemView.getTag());
+            intent.putExtra("TASKDATA", (Parcelable) viewHolder.itemView.getTag());
             activity.startActivity(intent);
-        }else if(direction == LEFT){
-            String taskText = (((TextView)((View)viewHolder.itemView.getParent()).findViewById(R.id.taskTitle)).getText().toString());
-            DataRepository.getInstance().deleteTextTask(taskText);
+        } else if(direction == LEFT){
 
-            ttViewModel.updateFullTextTasks(catMask);
+            activity.deleteTask(viewHolder.itemView);
         }
     }
 
@@ -67,7 +63,6 @@ public class SwipeController extends Callback {
         if (actionState == ACTION_STATE_SWIPE){
             setTouchListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
-        Log.d("SWIPE", "dx: " + dX + ", dy: " + dY);
         super.onChildDraw(c, recyclerView, viewHolder, dX,dY, actionState,isCurrentlyActive);
     }
 
@@ -81,12 +76,12 @@ public class SwipeController extends Callback {
         });
     }
 
-    public int convertToAbsoluteDirection(int flags, int layoutDirection){
-        if(swipeBack){
-            swipeBack = false;
-            return 0;
-        }
-        return super.convertToAbsoluteDirection(flags, layoutDirection);
-    }
+//    public int convertToAbsoluteDirection(int flags, int layoutDirection){
+//        if(swipeBack){
+//            swipeBack = false;
+//            return 0;
+//        }
+//        return super.convertToAbsoluteDirection(flags, layoutDirection);
+//    }
 
 }
