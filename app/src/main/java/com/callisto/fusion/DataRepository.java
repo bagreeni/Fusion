@@ -71,7 +71,7 @@ public class DataRepository {
                 // make a Task and insert
                 Task task = new Task();
                 task.setDueDate(dueDate);
-                task.setDueDate(workDate);
+                task.setWorkDate(workDate);
                 task.setPriority(priority);
 
                 new Date();

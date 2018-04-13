@@ -1,6 +1,7 @@
 package com.callisto.fusion.ui;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.callisto.fusion.DataRepository;
+import com.callisto.fusion.FusionApplication;
 import com.callisto.fusion.R;
 import com.callisto.fusion.db.entities.FullTextTask;
 
@@ -43,15 +45,19 @@ public class MoreActivity extends AppCompatActivity {
         Intent intent = getIntent();
          ftt = (FullTextTask)intent.getParcelableExtra("TASKDATA");
 
-        ((TextView)findViewById(R.id.editText)).setText(ftt.getData());
-        ((TextView)findViewById(R.id.editCategories)).setText(ftt.getCategoryList());
-        ((TextView)findViewById(R.id.editDueDate)).setText(ftt.getDueDate().toString());
-        ((TextView)findViewById(R.id.editWorkDate)).setText(ftt.getWorkDate().toString());
-        ((TextView)findViewById(R.id.editPriority)).setText(ftt.getPriority());
+        ((EditText)findViewById(R.id.editText)).setText(ftt.getData());
+        ((EditText)findViewById(R.id.editCategories)).setText(ftt.getCategoryList());
+        ((EditText)findViewById(R.id.editPriority)).setText(String.valueOf(ftt.getPriority()));
 
         myCalendar = Calendar.getInstance();
         workDateBox = findViewById(R.id.editWorkDate);
         dueDateBox = findViewById(R.id.editDueDate);
+
+        workDate = ftt.getWorkDate();
+        dueDate = ftt.getDueDate();
+
+        updateLabelDue();
+        updateLabelWork();
 
         final DatePickerDialog.OnDateSetListener dateWork = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -88,16 +94,6 @@ public class MoreActivity extends AppCompatActivity {
                 new DatePickerDialog(MoreActivity.this, dateDue ,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     public void editTask(View v){
@@ -106,6 +102,8 @@ public class MoreActivity extends AppCompatActivity {
         int priority = Integer.valueOf(((TextView)findViewById(R.id.editPriority)).getText().toString());
 
         DataRepository.getInstance().editTextTask(ftt.getTaskID(),((TextView)findViewById(R.id.editText)).getText().toString(),list, workDate, dueDate, priority);
+        
+        returnToMainActivity(v);
     }
 
     private void updateLabelWork(){
@@ -119,6 +117,10 @@ public class MoreActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         dueDateBox.setText(sdf.format(myCalendar.getTime()));
+    }
+    public void returnToMainActivity(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }
