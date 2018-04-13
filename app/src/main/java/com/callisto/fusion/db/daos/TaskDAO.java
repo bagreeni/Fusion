@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.callisto.fusion.db.entities.Task;
 
@@ -16,6 +17,9 @@ public interface TaskDAO {
 
     @Query("SELECT * FROM Task WHERE taskID = :findTaskID")
     Task getTaskFromID(long findTaskID);
+
+    @Update
+    void updateTask(Task task);
 
     @Insert
     long insertTask(Task task);
